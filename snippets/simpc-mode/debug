@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: idebug
+# key: idebug
+# --
+#define idebug(x) printf(#x" = %d\n", x)

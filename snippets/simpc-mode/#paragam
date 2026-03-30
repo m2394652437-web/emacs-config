@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: #pragam
+# key: pra
+# --
+#pragma once
+#ifndef ` (upcase (file-name-sans-extension (file-name-nondirectory (buffer-file-name)))) `_H
+#define ` (upcase (file-name-sans-extension (file-name-nondirectory (buffer-file-name)))) `_H
+
+$0
+
+#endif /* ` (upcase (file-name-sans-extension (file-name-nondirectory (buffer-file-name)))) `_H */

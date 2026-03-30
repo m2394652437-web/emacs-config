@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+# name: main
+# key: us
+# --
+using System;
+
+namespace MyProject
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            $0
+        }
+    }
+}

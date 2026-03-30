@@ -1,0 +1,8 @@
+q# -*- mode: snippet -*-
+# name: img
+# key: img
+# --
+#+CAPTION: ${1:nil}
+#+ATTR_ORG: :${2:width 600}
+[[${3:/home/mm/Pictures/.png}]]
+$0

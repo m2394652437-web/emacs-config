@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: org tamplate
+# key: org
+# --
+#+TITLE: 
+#+AUTHOR: CQZY
+#+EMAIL: m2394652437@gmail.com
+#+SETUPFILE: https://fniessen.github.io/org-html-themes/org/html-theme-readtheorg.setup
+#+HTML_HEAD: <style> li{max-width:1500px;}</style>

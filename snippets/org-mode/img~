@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: img
+# key: img
+# --
+#+CAPTION: ${1:nil}
+#+attr_org: :height 600
+#+attr_html: :height 600px
+#+attr_latex: :height 0.25\linewidth
+[[./images${2}.png]]
+$0

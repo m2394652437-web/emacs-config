@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: int_main
+# key: int mian
+# --
+int main() {
+
+return 0;
+}

@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+# name: new_class_header
+# key: ch
+# --
+#ifndef `(upcase (file-name-nondirectory (buffer-file-name)))`_H
+#define `(upcase (file-name-nondirectory (buffer-file-name)))`_H
+
+class `(file-name-nondirectory (buffer-file-name))`
+{
+private:
+public:
+    $0
+
+};
+
+#endif
