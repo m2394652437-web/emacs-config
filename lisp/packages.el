@@ -1,6 +1,10 @@
 (use-package paradox)
 (paradox-enable)
 
+(use-package consult
+  :ensure t                   
+  :bind (("C-s" . consult-line)))
+
 (use-package markdown-mode
   :ensure t)
 
@@ -10,33 +14,13 @@
 
 (use-package projectile)
 
-;;;;enhance search in
-(use-package swiper
- :after ivy
- :bind (("C-s" . swiper-isearch)
-       ("C-r" . swiper-isearch-backward))
- :config (setq swiper-action-recenter t
-               swiper-include-line-number-in-search t))
-(use-package ivy
- :defer 1
- :demand
- :hook (after-init . ivy-mode)
- :config
- (ivy-mode 1)
- (setq ivy-use-virtual-buffers t
-       ivy-initial-inputs-alist nil
-       ivy-count-format "%d/%d "
-       enable-recursive-minibuffers t
-       ivy-re-builders-alist '((t . ivy--regex-ignore-order))))
-
-(use-package counsel
- :after ivy
- :bind (("M-x" . counsel-M-x)
-       ("C-x C-f" . counsel-find-file)
-       ("C-c f" . counsel-recentf)
-       ("C-c g" . counsel-git)))
-;;;;enhance search out
-
+(use-package vertico
+  :ensure t
+  :hook (after-init . vertico-mode))
+(use-package orderless
+  :ensure t
+  :init
+  (setq completion-styles '(orderless)))
 
 (use-package drag-stuff
   :bind(("<M-up>". drag-stuff-up)
@@ -44,38 +28,14 @@
 
 (use-package restart-emacs)
 
-
 (use-package flycheck
   :hook(after-init . global-flycheck-mode))
 
 ;better buffer control
 
-;; (use-package ivy-posframe)
-;; ;; display at `ivy-posframe-style'
-;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display)))
-;; ;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center)))
-;; ;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-window-center)))
-;; ;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-bottom-left)))
-;; ;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-window-bottom-left)))
-;; ;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-top-center)))
-;; (dolist (func (list
-;; ;;	       #'treemacs
-;; 	       ))
-;;  (setf (alist-get func ivy-posframe-display-functions-alist) nil) )
-;; (ivy-posframe-mode 1)
-
-
-
 ;;ace window 
 (use-package ace-window 
   :bind (("s-/ " . 'ace-window)))
-
-
-;; ;;which key mode
-;; (use-package which-key
-;;   :defer nil
-;;   :config (which-key-mode))
-
 
 (package-install 'embark-consult)
 (package-install 'wgrep)
@@ -93,11 +53,6 @@
 
 (define-key minibuffer-local-map (kbd "C-c C-e") 'embark-export-write)
 
-
-;;consult-ripgrep
-
-;;everyting
-;;consult-locate
 
 (progn
   (setq consult-locate-args (encode-coding-string "es.exe -i -p -r" 'gbk))

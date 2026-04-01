@@ -30,9 +30,8 @@
 (global-set-key (kbd "<f7>") 'kmacro-start-macro-or-insert-counter)
 
 (global-set-key (kbd "M-]") 'ff-find-other-file)
-(global-set-key (kbd "<f5>") 'compile)
 
-(global-set-key (kbd "C-x p") 'toggle-chinese-search)
+(global-set-key (kbd "<f5>") 'compile)
 
 (defun open-init-file()
   (interactive)

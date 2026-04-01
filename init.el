@@ -1,6 +1,6 @@
 (setq frame-inhibit-implied-resize t)
-
 (add-to-list 'load-path "~/.emacs.d/lisp/")
+(setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
 
 (require 'startup)
 (require 'utils)
