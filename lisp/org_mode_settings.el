@@ -9,18 +9,16 @@
   :after org
   :hook (org-mode . org-fragtog-mode))  
 
-
-(require 'ob-csharp)
 ;; active Babel languages
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((R . t)
-  (python . t)
-  (C . t)
-  (latex .t)
-  (shell . t)
-  (csharp . t)
-  (emacs-lisp . t)))
+;; (org-babel-do-load-languages
+;;  'org-babel-load-languages
+;;  '((R . t)
+;;   (python . t)
+;;   (C . t)
+;;   (latex .t)
+;;   (shell . t)
+;;   (csharp . t)
+;;   (emacs-lisp . t)))
 
 (use-package url
   :ensure t
@@ -34,12 +32,13 @@
   :hook (after-init . (lambda ()
 			(setq org-modern-hide-stars 'leading)
 			(global-org-modern-mode t)))
+  :hook (org-mode . org-modern-mode)
   :config
   ;; 定义各级标题行字符
   (setq org-modern-star ["◉" "○" "✸" "✳" "◈" "◇" "✿" "❀" "✜"])
   (setq-default line-spacing 0.1)
   (setq org-modern-label-border 1)
-  (setq org-modern-table-vectical 2)
+  (setq org-modern-table-vertical 2)
   (setq org-modern-table-horizontal 0)
 
   ;; 复选框美化
@@ -58,8 +57,8 @@
   ;; 属性标签使用上述定义的符号，不由 org-modern 定义
   (setq org-modern-block-name nil)
   (setq org-modern-keyword nil)
-  )(use-package org-modern
-  :hook (org-mode . org-modern-mode))
+  )
+
 ;;- org modern
 
 ;;;;
@@ -69,6 +68,6 @@
   (hyperbole-mode 1))  
 ;;;;
 
-
+(message "org_mode_settings.el loaded successfully!")
 
 (provide 'org_mode_settings)

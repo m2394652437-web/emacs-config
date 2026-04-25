@@ -1,3 +1,6 @@
+;;(setq gc-cons-threshold 33554432) 
+(setq undo-auto-current-boundary-timer nil) 
+
 (setq initial-scratch-message     "夫君子之行，静以修身，俭以养德。非澹泊无以明志，非宁静无以致远。
 夫学须静也，才须学也，非学无以广才，非志无以成学。淫慢则不能励精，险躁则不能治性。
 年与时驰，意与日去，遂成枯落，多不接世，悲守穷庐，将复何及！
@@ -9,12 +12,12 @@
   (load custom-file))
 
 
-(setq package-archives '(("gnu"    . "https://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
-                         ("nongnu" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/")
-                         ("melpa" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
+;; (setq package-archives '(("gnu"    . "https://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
+;;                          ("nongnu" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/")
+;;                          ("melpa" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
 
-;;"melpa"  . "https://mirrors.tuna.tsinghua.edu.cn/elpa/melpa"
-;;"melpa" . "https://melpa.org/packages/"
+;; ;;"melpa"  . "https://mirrors.tuna.tsinghua.edu.cn/elpa/melpa"
+;; ;;"melpa" . "https://melpa.org/packages/"
 
 (setq package-check-signature nil)
  

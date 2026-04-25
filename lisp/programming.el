@@ -10,14 +10,13 @@
     (goto-line saved-line-number)))
 (global-set-key (kbd "C-f") 'astyle-buffer)
 
-
-
 ;;;;projectile
 (use-package projectile
   :ensure t
   :init
   (projectile-mode +1))
 
+(setq projectile-switch-project-action 'projectile-vc)
 ;;;;default command to compile c
 (add-hook 'simpc-mode-hook
           (lambda ()

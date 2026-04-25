@@ -15,19 +15,20 @@
 ;;
 (use-package hydra
   :ensure t)
-(defhydra hydra-buffer-menu (:color pink
+(defhydra hydra-buffer-menu (:color red
 				    :hint nil)
-  "
-_m_: mark       _i_ imenu    
-_l_: list          
-_d_: delete        
-_D_: delete all     
 "
-  ("m" bookmark-set)
-  ("l" counsel-bookmark)
-  ("d" bookmark-delete)
-  ("D" bookmark-delete-all)
-  ("i" counsel-imenu)
+^Mark^
+--------
+_n_: next       
+_p_: previous          
+_a_: all        
+_l_: lines       
+"
+  ("n" mc/mark-next-like-this)
+  ("p" mc/mark-previous-like-this)
+  ("a" mc/mark-all-like-this)
+  ("l" mc/edit-lines)
 
   ("ESC" nil "cancel"))
 

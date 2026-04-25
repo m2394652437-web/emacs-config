@@ -1,13 +1,14 @@
+;;rime 
 (use-package rime
   :custom
   (rime-user-data-dir "~/.local/share/fcitx5/rime"))
 (setq rime-show-candidate 'posframe) 
 (setq default-input-method "rime")
+;;end rime
 
-;;;; auto-capitalize-mode
-(defvar auto-capitalize-mode nil
-  "自动大写模式。")
-
+;; auto-capitalize-mode
+(defvar auto-capitalize-mode nil)
+  "自动大写模式"
 (defun capitalize-last-word ()
   "大写前一个单词的首字母，保留其余字母原有大小写。
 不处理以 . 或 / 开头的单词。"
@@ -48,10 +49,15 @@
   (message "auto-capitalize-mode %s" (if auto-capitalize-mode "on" "off")))
 
 (global-set-key (kbd "C-c c") 'toggle-auto-capitalize-mode)
+;;end auto capitalize mode
 
-;;;;-auto-capitalize-mode
 
-;;;;lsp bridge
+;; Yasnippet
+(use-package yasnippet)
+(yas-global-mode 1)
+;; end Yasnippet
+
+;;lsp bridge
 (add-to-list 'load-path "~/.emacs.d/lisp/lsp-bridge-master")
 
 (setq lsp-bridge-python-command 
@@ -59,25 +65,23 @@
 
 (setq lsp-bridge-python-lsp-server "pyright")
 (setq lsp-bridge-c-lsp-server "clangd")
-
-
+(setq lsp-bridge-g-lsp-server "glsl_analyzer")
+(with-eval-after-load 'lsp-bridge
+  (add-to-list 'lsp-bridge-single-lang-server-mode-list
+               '(glsl-mode . "glsl_analyzer")))
 
 (setq lsp-bridge-enable-search-words t
       lsp-bridge-enable-inlay-hint t
       lsp-bridge-enable-diagnostics t)
 
-
-;; Yasnippet
-(use-package yasnippet)
-(yas-global-mode 1)
-
 (require 'lsp-bridge)
-
 (global-lsp-bridge-mode)
 
 (add-hook 'simpc-mode-hook #'lsp-bridge-mode)
 
 (setq lsp-bridge-enable-auto-import nil)
+(setq acm-enable-comment-parse nil) 
+(setq lsp-bridge-enable-log nil)
 
 (with-eval-after-load 'lsp-bridge
   (add-hook 'simpc-mode-hook
@@ -86,6 +90,28 @@
                 (lsp-bridge-mode 1)))))
 (define-key lsp-bridge-mode-map (kbd "<f3>") #'lsp-bridge-peek)
 (define-key lsp-bridge-mode-map (kbd "<f4>") #'lsp-bridge-find-def)
+;;end lsp bridge
+
+;;mutiple-cursors
+(use-package multiple-cursors
+  :ensure t)
+;;end multiple-cursors
+
+;;+1
+(defun my/increment-number-at-point ()
+  "add 1 to number at cursor"
+  (interactive)
+  (let ((bounds (bounds-of-thing-at-point 'number)))
+    (if bounds
+        (let* ((beg (car bounds))
+               (end (cdr bounds))
+               (num-str (buffer-substring-no-properties beg end))
+               (num (string-to-number num-str)))
+          (delete-region beg end)
+          (insert (number-to-string (1+ num))))
+      (message "No number found at cursor"))))
+(global-set-key (kbd "C-+") 'my/increment-number-at-point)
+;;end +1
 
 (provide 'insert)
 

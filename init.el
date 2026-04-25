@@ -12,10 +12,9 @@
 (require 'ui)
 (require 'org_mode_settings)
 (require 'custom)
-(require 'simpc-mode)
 (require 'for_kitty)
 (require 'menu&bookmark)
+(require 'modes)
+(require 'simpc-mode)
+
 (add-to-list 'auto-mode-alist '("\\.[hc]?\\'" . simpc-mode))
-
-
-

@@ -1,7 +1,15 @@
+(use-package eshell-git-prompt
+:ensure t
+:after esh-mode)
+(eshell-git-prompt-use-theme 'powerline)
+
 (use-package rainbow-delimiters)
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+
 ;(tab-bar-mode 1)
 ;(tab-bar-history-mode 1)
+
+(which-function-mode 1)
 (pixel-scroll-mode 1)
 (blink-cursor-mode -1)
 (menu-bar-mode -1)
@@ -10,34 +18,35 @@
 (ido-mode 1)
 (global-visual-line-mode 1)
 (setq inhibit-startup-screen t)
-
-(set-frame-font "JetBrains Mono-13" nil t)
-
-
-(global-hl-line-mode 1)
-
-;;(use-package gruber-darker-theme)
-;;(load-theme 'gruber-darker 1)
-;;(load-theme 'whiteboard t)
-(use-package modus-themes)
-(load-theme 'modus-operandi t) 
-
-(use-package golden-ratio
-  :hook (after-init . golden-ratio-mode)
-  :custom
-  (golden-ratio-exclude-modes '(occur-mode)))
-
 (setq display-line-numbers-type 'relative)
 (global-display-line-numbers-mode 1)
+(global-hl-line-mode 1)
 
+(set-frame-font "JetBrains Mono-11.5" nil t)
+
+;;load theme
+
+;; (use-package modus-themes)
+;; (load-theme 'modus-operandi t) 
+(load-theme 'deeper-blue t)
+
+;;end load theme
 
 (use-package solaire-mode
   :ensure t
   :config
   (solaire-global-mode +1)) 
 
+;; (use-package indent-bars
+;;   :ensure t
+;;   :hook (prog-mode . indent-bars-mode)
+;;   :config
+;;   (setq indent-bars-width-follows-indent-p t)
+;;     (setq indent-bars-pattern nil           ; 重要：取消逐字符模式
+;;         indent-bars-odd-fringe-pattern nil
+;;         indent-bars-even-fringe-pattern nil))
+
 ;;;;mode line
-;; 最小化配置
 ;; spaceline 顶部显示配置
 (use-package spaceline)
 (require 'spaceline-config)
@@ -53,18 +62,5 @@
 (setq-default header-line-format
               '((:eval (spaceline-ml-main))))
 (setq-default mode-line-format nil)
-
-
-
-(use-package highlight-indent-guides
-  :config
-  (setq highlight-indent-guides-auto-enabled t )
-  (setq highlight-indent-guides-method 'column)
-  ;;(set-face-background 'highlight-indent-guides-odd-face "#16d4d4")
-  ;;(set-face-background 'highlight-indent-guides-even-face "#ec90af")
- )
-(add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
-
-
 
 (provide 'ui)

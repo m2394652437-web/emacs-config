@@ -1,5 +1,16 @@
+(use-package gcmh
+  :config
+  (setq gcmh-high-cons-threshold 33554432)  ; 32 MB，高峰期
+  (setq gcmh-idle-delay 15))                  ; 空闲15秒后GC
+(gcmh-mode 1)
+
 (use-package paradox)
 (paradox-enable)
+
+(use-package golden-ratio
+  :hook (after-init . golden-ratio-mode)
+  :custom
+  (golden-ratio-exclude-modes '(occur-mode)))
 
 (use-package consult
   :ensure t                   
@@ -21,6 +32,8 @@
   :ensure t
   :init
   (setq completion-styles '(orderless)))
+(setq vertico-count 6) 
+(setq vertico-fast t)
 
 (use-package drag-stuff
   :bind(("<M-up>". drag-stuff-up)
@@ -28,8 +41,8 @@
 
 (use-package restart-emacs)
 
-(use-package flycheck
-  :hook(after-init . global-flycheck-mode))
+;; (use-package flycheck
+;;   :hook(after-init . global-flycheck-mode))
 
 ;better buffer control
 
