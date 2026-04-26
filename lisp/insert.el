@@ -51,52 +51,6 @@
 (global-set-key (kbd "C-c c") 'toggle-auto-capitalize-mode)
 ;;end auto capitalize mode
 
-
-;; Yasnippet
-(use-package yasnippet)
-(yas-global-mode 1)
-;; end Yasnippet
-
-;;lsp bridge
-(add-to-list 'load-path "~/.emacs.d/lisp/lsp-bridge-master")
-
-(setq lsp-bridge-python-command 
-      (expand-file-name "~/.emacs.d/lsp-bridge-env/bin/python3"))
-
-(setq lsp-bridge-python-lsp-server "pyright")
-(setq lsp-bridge-c-lsp-server "clangd")
-(setq lsp-bridge-g-lsp-server "glsl_analyzer")
-(with-eval-after-load 'lsp-bridge
-  (add-to-list 'lsp-bridge-single-lang-server-mode-list
-               '(glsl-mode . "glsl_analyzer")))
-
-(setq lsp-bridge-enable-search-words t
-      lsp-bridge-enable-inlay-hint t
-      lsp-bridge-enable-diagnostics t)
-
-(require 'lsp-bridge)
-(global-lsp-bridge-mode)
-
-(add-hook 'simpc-mode-hook #'lsp-bridge-mode)
-
-(setq lsp-bridge-enable-auto-import nil)
-(setq acm-enable-comment-parse nil) 
-(setq lsp-bridge-enable-log nil)
-
-(with-eval-after-load 'lsp-bridge
-  (add-hook 'simpc-mode-hook
-            (lambda ()
-              (when (derived-mode-p 'simpc-mode)
-                (lsp-bridge-mode 1)))))
-(define-key lsp-bridge-mode-map (kbd "<f3>") #'lsp-bridge-peek)
-(define-key lsp-bridge-mode-map (kbd "<f4>") #'lsp-bridge-find-def)
-;;end lsp bridge
-
-;;mutiple-cursors
-(use-package multiple-cursors
-  :ensure t)
-;;end multiple-cursors
-
 ;;+1
 (defun my/increment-number-at-point ()
   "add 1 to number at cursor"

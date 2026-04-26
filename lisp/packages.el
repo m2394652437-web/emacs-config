@@ -1,3 +1,7 @@
+(use-package clipetty
+  :ensure t
+  :hook (after-init . global-clipetty-mode))
+
 (use-package bind-key
   :ensure t)
 
@@ -6,8 +10,8 @@
 
 (use-package gcmh
   :config
-  (setq gcmh-high-cons-threshold 33554432)  ;32 MB
-  (setq gcmh-idle-delay 15))                  ;空闲15秒后GC
+  (setq gcmh-high-cons-threshold 33554432)
+  (setq gcmh-idle-delay 15))
 (gcmh-mode 1)
 
 (use-package paradox)
@@ -53,8 +57,7 @@
 ;better buffer control
 
 ;;ace window 
-(use-package ace-window 
-  :bind (("s-/ " . 'ace-window)))
+(use-package ace-window)
 ;;end ace window
 
 (package-install 'embark-consult)

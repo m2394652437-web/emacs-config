@@ -4,7 +4,7 @@
 
 (require 'startup)
 (require 'utils)
-(require 'mouse&keybindings)
+(require 'keybindings)
 (require 'packages)
 (require 'file_management)
 (require 'insert)
@@ -18,4 +18,5 @@
 (require 'simpc-mode)
 (require 'privacy)
 (require 'email)
+(require 'eshell-config)
 (add-to-list 'auto-mode-alist '("\\.[hc]?\\'" . simpc-mode))
