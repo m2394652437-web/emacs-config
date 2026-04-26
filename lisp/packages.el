@@ -1,7 +1,13 @@
+(use-package bind-key
+  :ensure t)
+
+(use-package password-store)
+(require 'password-store)
+
 (use-package gcmh
   :config
-  (setq gcmh-high-cons-threshold 33554432)  ; 32 MB，高峰期
-  (setq gcmh-idle-delay 15))                  ; 空闲15秒后GC
+  (setq gcmh-high-cons-threshold 33554432)  ;32 MB
+  (setq gcmh-idle-delay 15))                  ;空闲15秒后GC
 (gcmh-mode 1)
 
 (use-package paradox)
@@ -49,6 +55,7 @@
 ;;ace window 
 (use-package ace-window 
   :bind (("s-/ " . 'ace-window)))
+;;end ace window
 
 (package-install 'embark-consult)
 (package-install 'wgrep)
@@ -65,23 +72,5 @@
          #'consult-preview-at-point-mode))))
 
 (define-key minibuffer-local-map (kbd "C-c C-e") 'embark-export-write)
-
-
-(progn
-  (setq consult-locate-args (encode-coding-string "es.exe -i -p -r" 'gbk))
-  (add-to-list 'process-coding-system-alist '("es" gbk . gbk))
-  )
-(eval-after-load 'consult
-  (progn
-    (setq
-     consult-narrow-key "<"
-     consult-line-numbers-widen t
-     consult-async-min-input 2
-     consult-async-refresh-delay  0.15
-     consult-async-input-throttle 0.2
-     consult-async-input-debounce 0.1)
-    ))
-
-
 
 (provide 'packages)

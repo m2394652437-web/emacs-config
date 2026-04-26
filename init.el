@@ -2,7 +2,6 @@
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
 
-(require 'pravicy)
 (require 'startup)
 (require 'utils)
 (require 'mouse&keybindings)
@@ -17,5 +16,6 @@
 (require 'menu&bookmark)
 (require 'modes)
 (require 'simpc-mode)
+(require 'privacy)
 (require 'email)
 (add-to-list 'auto-mode-alist '("\\.[hc]?\\'" . simpc-mode))
