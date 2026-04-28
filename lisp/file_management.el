@@ -11,5 +11,8 @@
 (use-package treemacs-projectile)
 (use-package treemacs-magit)
 
+(defun my/treemacs-use-counsel-imenu (original-func &rest args)
+  (counsel-imenu))
+(advice-add 'treemacs-select-when-current-window :around #'my/treemacs-use-counsel-imenu)
 
 (provide 'file_management)

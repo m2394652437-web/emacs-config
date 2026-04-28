@@ -7,7 +7,8 @@
     "--clang-tidy",
     "--enable-config",
     "--header-insertion-decorators=0",
-    "--header-insertion=never"
+    "--header-insertion=never",
+    "--background-index" 
   ],
   "settings": {}
 }

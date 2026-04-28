@@ -1,5 +1,5 @@
 (defun call-with-auto-input (function &rest values)
-  "按顺序自动将参数输入对应函数"
+ "按顺序自动将参数输入对应函数"
   (let ((index 0)
         (value-list values))
     (cl-letf (((symbol-function 'read-string)

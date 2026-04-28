@@ -1,3 +1,8 @@
+;;临时提高GC阈值
+(setq gc-cons-threshold 100000000)  
+;;增加进程读取缓冲
+(setq read-process-output-max (* 1024 1024))  
+
 (defun astyle-buffer ()
   (interactive)
   (let ((saved-line-number (line-number-at-pos)))
@@ -10,104 +15,126 @@
     (goto-line saved-line-number)))
 (global-set-key (kbd "C-f") 'astyle-buffer)
 
-;;;;projectile
+(add-hook 'c-mode-common-hook
+	  (lambda ()
+	    (define-key simpc-mode-map (kbd "C-f") 'astyle-buffer)
+	    (define-key c++-mode-map (kbd "C-f") 'astyle-buffer)))
+
 (use-package projectile
   :ensure t
+  :defer t
   :init
-  (projectile-mode +1))
-
-(setq projectile-switch-project-action 'projectile-vc)
-
-;;default command to compile c
-(add-hook 'simpc-mode-hook
-          (lambda ()
-            (when buffer-file-name
-              (let* ((dir (file-name-directory buffer-file-name))
-                     (current-file-name (file-name-nondirectory buffer-file-name))
-                                       (output-name (file-name-sans-extension current-file-name))
-                                       (c-files (directory-files dir nil "\\.c$")))
-                (when c-files
-                  (setq-local compile-command
-                              (concat "gcc " 
-                                      (mapconcat #'shell-quote-argument c-files " ")
-                                      " -o " output-name)))))))
-;;end default command to compile c
-
-;;default command to compile cpp
-(add-hook 'simpc-mode-hook
-          (lambda ()
-            (when buffer-file-name
-              (let* ((dir (file-name-directory buffer-file-name))
-                     (cpp-files (directory-files dir nil "\\.cpp$")))
-                (when cpp-files
-                  (setq-local compile-command
-                              (concat "g++ " 
-                                      (mapconcat #'shell-quote-argument cpp-files " ")
-                                      " -o main")))))))
-;;end default command to compile cpp
+  (setq projectile-mode-line-prefix " Proj"
+	projectile-enable-caching t)
+  :config
+  (projectile-mode +1)
+  (setq projectile-switch-project-action 'projectile-vc))
 
 
-;;default command to compile python
-(add-hook 'python-mode-hook
-          (lambda ()
-            (when buffer-file-name
-              (setq-local compile-command
-                (concat "python3 " 
-                       (shell-quote-argument 
-                        (file-name-nondirectory buffer-file-name)))))))
-;;end default command to compile python
+(defun setup-local-compile-command ()
+  "设置当前buffer的编译命令（根据文件类型）"
+  (when buffer-file-name
+    (let* ((dir (file-name-directory buffer-file-name))
+           (ext (file-name-extension buffer-file-name)))
+      (cond
+       ;; C 文件
+       ((string= ext "c")
+        (let* ((current-file (file-name-nondirectory buffer-file-name))
+               (output-name (file-name-sans-extension current-file))
+               (c-files (directory-files dir nil "\\.c$")))
+          (when c-files
+            (setq-local compile-command
+                        (concat "gcc "
+                                (mapconcat #'shell-quote-argument c-files " ")
+                                " -o " output-name)))))
+       ;; C++ 文件
+       ((string= ext "cpp")
+        (let ((cpp-files (directory-files dir nil "\\.cpp$")))
+          (when cpp-files
+            (setq-local compile-command
+                        (concat "g++ "
+                                (mapconcat #'shell-quote-argument cpp-files " ")
+                                " -o main")))))
+       ;; Python 文件
+       ((string= ext "py")
+        (setq-local compile-command
+                    (concat "python3 "
+                            (shell-quote-argument
+                             (file-name-nondirectory buffer-file-name)))))))))
+
+
+(add-hook 'c-mode-hook 'setup-local-compile-command)
+(add-hook 'c++-mode-hook 'setup-local-compile-command)
+(add-hook 'python-mode-hook 'setup-local-compile-command)
+(add-hook 'c-ts-mode-hook 'setup-local-compile-command)
+(add-hook 'c++-ts-mode-hook 'setup-local-compile-command)
+(add-hook 'python-ts-mode-hook 'setup-local-compile-command)
+
 
 ;; Yasnippet
-(use-package yasnippet)
-(yas-global-mode 1)
+(use-package yasnippet
+  :ensure t
+  :defer t
+  :config
+  (yas-global-mode 1))
 ;; end Yasnippet
 
-;;lsp bridge
+                   ;;; lsp-bridge
 (add-to-list 'load-path "~/.emacs.d/lisp/lsp-bridge-master")
-
-(setq lsp-bridge-python-command 
+(setq lsp-bridge-python-command
       (expand-file-name "~/.emacs.d/lsp-bridge-env/bin/python3"))
 
-(setq lsp-bridge-python-lsp-server "pyright")
-(setq lsp-bridge-c-lsp-server "clangd")
-(setq lsp-bridge-g-lsp-server "glsl_analyzer")
 (with-eval-after-load 'lsp-bridge
-  (add-to-list 'lsp-bridge-single-lang-server-mode-list
-               '(glsl-mode . "glsl_analyzer")))
+  (add-to-list 'lsp-bridge-single-lang-server-mode-list '(c++-ts-mode . "clangd"))
+  (add-to-list 'lsp-bridge-single-lang-server-mode-list '(c-ts-mode . "clangd"))
+  (add-to-list 'lsp-bridge-single-lang-server-mode-list '(python-ts-mode . "pyright")))
+
+;; ;; lang server
+;; (setq lsp-bridge-python-lsp-server "pyright"
+;;       lsp-bridge-c-lsp-server "clangd"
+;;       lsp-bridge-g-lsp-server "glsl_analyzer")
 
 (setq lsp-bridge-enable-search-words t
+      lsp-bridge-enable-diagnostics t
       lsp-bridge-enable-inlay-hint t
-      lsp-bridge-enable-diagnostics t)
+      lsp-bridge-enable-auto-import nil
+      lsp-bridge-enable-log nil
+      acm-enable-comment-parse nil
+      )
 
-(require 'lsp-bridge)
-(global-lsp-bridge-mode)
+(use-package lsp-bridge
+  :load-path "~/.emacs.d/lisp/lsp-bridge-master"
+  :defer t
+  :hook ((prog-mode . lsp-bridge-mode)
+         ;;(lsp-bridge-mode . lsp-bridge-semantic-tokens-mode)
+	 )
+  :config
+  ;; glsl server
+  (with-eval-after-load 'lsp-bridge
+    (add-to-list 'lsp-bridge-single-lang-server-mode-list
+		 '(glsl-mode . "glsl_analyzer")))
 
-(add-hook 'simpc-mode-hook #'lsp-bridge-mode)
+  ;; if in CLI
+  (unless (display-graphic-p)
+    (require 'acm-terminal)
+    (use-package popon)))
+;; end lsp-bridge
 
-(setq lsp-bridge-enable-auto-import nil)
-(setq acm-enable-comment-parse nil) 
-(setq lsp-bridge-enable-log nil)
-
-(with-eval-after-load 'lsp-bridge
-  (add-hook 'simpc-mode-hook
-            (lambda ()
-              (when (derived-mode-p 'simpc-mode)
-                (lsp-bridge-mode 1)))))
-(define-key lsp-bridge-mode-map (kbd "<f3>") #'lsp-bridge-peek)
-(define-key lsp-bridge-mode-map (kbd "<f4>") #'lsp-bridge-find-def)
-
-
-;;if CLI
-(use-package popon)
-(unless (display-graphic-p)
-  (require 'acm-terminal)
-  )
-;;end lsp bridge
-
-;;mutiple-cursors
+;; multiple-cursors
 (use-package multiple-cursors
-  :ensure t)
-;;end multiple-cursors
+  :ensure t
+  :defer t
+  :bind (("C->" . mc/mark-next-like-this)
+         ("C-<" . mc/mark-previous-like-this)
+         ("C-c C-<" . mc/mark-all-like-this)))
 
+;; 自动清理临时文件
+(add-hook 'emacs-lisp-mode-hook
+          (lambda ()
+            (setq lexical-binding t)))
+
+(use-package tree-sitter-langs)
+
+(add-hook 'prog-mode-hook 'hs-minor-mode)
 
 (provide 'programming)

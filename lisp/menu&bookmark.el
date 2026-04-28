@@ -20,7 +20,7 @@
 "
 ^Mark^
 --------
-_n_: next       
+_n_: next       _b_:imenu
 _p_: previous          
 _a_: all        
 _l_: lines       
@@ -29,11 +29,8 @@ _l_: lines
   ("p" mc/mark-previous-like-this)
   ("a" mc/mark-all-like-this)
   ("l" mc/edit-lines)
-
+  ("b" counsel-imenu)
   ("ESC" nil "cancel"))
-
-(global-set-key (kbd "C-<tab>") 'hydra-buffer-menu/body)
-
 
 (defun freedom-context-menu (event)
   (interactive "e")

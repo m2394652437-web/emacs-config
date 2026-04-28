@@ -1,0 +1,15 @@
+# -*- mode: snippet -*-
+# name: function help
+# key: funhelp
+# --
+/**
+ *@brief $1
+ *
+ *$2
+ *
+ *@param $3
+ *@return $4
+ *
+ *@see $5
+ */
+ 

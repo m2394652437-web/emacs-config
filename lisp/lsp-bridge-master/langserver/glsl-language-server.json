@@ -1,6 +1,9 @@
 {
-  "name": "glsl_analyzer",
+  "name": "glsl-language-server",
   "languageId": "glsl",
-  "command": ["glsl_analyzer"],
+  "command": [
+    "glslls",
+    "--stdin"
+  ],
   "settings": {}
 }

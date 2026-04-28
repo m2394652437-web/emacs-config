@@ -1,15 +1,11 @@
 (use-package eshell-git-prompt
-:ensure t
-:after esh-mode)
+  :ensure t
+  :after esh-mode)
 (eshell-git-prompt-use-theme 'powerline)
 
 (use-package rainbow-delimiters)
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 
-;(tab-bar-mode 1)
-;(tab-bar-history-mode 1)
-
-(which-function-mode 1)
 (pixel-scroll-mode 1)
 (blink-cursor-mode -1)
 (menu-bar-mode -1)
@@ -22,14 +18,19 @@
 (global-display-line-numbers-mode 1)
 (global-hl-line-mode 1)
 
-(set-frame-font "JetBrains Mono-11.5" nil t)
+;;font
+(when (display-graphic-p)
+  (add-hook 'window-setup-hook
+    (lambda ()
+      (set-face-attribute 'default nil :font "JetBrains Mono-11.5")      
+      (set-fontset-font t 'han "Maple Mono NF CN-12" nil 'prepend)      
+      )))
+;;end fort
 
 ;;load theme
-
-;; (use-package modus-themes)
-;; (load-theme 'modus-operandi t) 
+;;(use-package modus-themes)
+;;(load-theme 'modus-operandi t) 
 (load-theme 'deeper-blue t)
-
 ;;end load theme
 
 (use-package solaire-mode
@@ -37,30 +38,37 @@
   :config
   (solaire-global-mode +1)) 
 
-;; (use-package indent-bars
-;;   :ensure t
-;;   :hook (prog-mode . indent-bars-mode)
-;;   :config
-;;   (setq indent-bars-width-follows-indent-p t)
-;;     (setq indent-bars-pattern nil           ; 重要：取消逐字符模式
-;;         indent-bars-odd-fringe-pattern nil
-;;         indent-bars-even-fringe-pattern nil))
+;;mode line
+;;临时关闭
+(which-function-mode -1)
 
-;;;;mode line
-;; spaceline 顶部显示配置
-(use-package spaceline)
-(require 'spaceline-config)
-(setq spaceline-use-header-line t)
-;(setq redisplay-dont-pause t)
-;(setq redisplay-skip-fontification-on-input nil)
-(spaceline-spacemacs-theme)
-(setq spaceline-buffer-id-function 'buffer-file-path)
-(spaceline-toggle-buffer-id-on)
-(spaceline-toggle-buffer-size-on)
-(spaceline-toggle-major-mode-on)
-(spaceline-toggle-minor-modes-off)
-(setq-default header-line-format
-              '((:eval (spaceline-ml-main))))
+;;简单的占位
+(setq-default header-line-format " Emacs")
 (setq-default mode-line-format nil)
+
+;; spaceline 
+(use-package spaceline
+  :ensure t
+  :defer t
+  :config
+  (require 'spaceline-config)
+  (setq spaceline-use-header-line t)
+  (spaceline-spacemacs-theme)
+  (setq spaceline-buffer-id-function 'buffer-file-path)
+  (spaceline-toggle-buffer-id-on)
+  (spaceline-toggle-buffer-size-on)
+  (spaceline-toggle-major-mode-on)
+  (spaceline-toggle-minor-modes-off)
+  (setq-default header-line-format '((:eval (spaceline-ml-main))))
+  (setq-default mode-line-format nil))
+
+(add-hook 'after-init-hook
+	  (lambda ()
+	    (run-with-idle-timer 0.3 nil
+				 (lambda ()
+				   (require 'spaceline)				   
+				   (which-function-mode 1)
+				   ))))
+
 
 (provide 'ui)

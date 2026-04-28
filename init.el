@@ -2,7 +2,21 @@
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
 
+(setq tramp-mode nil)
+(setq tramp-gvfs-enabled nil)
+
+(setq gc-cons-threshold 100000000)  
+(add-hook 'after-init-hook
+  (lambda ()
+    (setq gc-cons-threshold 800000)))
+
+(if (file-exists-p (expand-file-name "lisp/privacy.el" user-emacs-directory))
+    (require 'privacy)
+  (require 'privacy-example)
+  (message "No privacy configuration found. "))
+
 (require 'startup)
+(require 'for_kitty)
 (require 'utils)
 (require 'keybindings)
 (require 'packages)
@@ -12,11 +26,9 @@
 (require 'ui)
 (require 'org_mode_settings)
 (require 'custom)
-(require 'for_kitty)
 (require 'menu&bookmark)
 (require 'modes)
 (require 'simpc-mode)
-(require 'privacy)
 (require 'email)
 (require 'eshell-config)
 (add-to-list 'auto-mode-alist '("\\.[hc]?\\'" . simpc-mode))

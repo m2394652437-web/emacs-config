@@ -705,6 +705,7 @@ If nil, lsp-bridge would try to detect by default."
     (perl-mode .                                                                 "perl-language-server")
     (futhark-mode .                                                              "futhark-lsp")
     (conf-toml-mode .                                                            "taplo")
+    (slint-mode .                                                                "slint-lsp")
     )
   "The lang server rule for file mode."
   :type 'cons)
@@ -842,6 +843,7 @@ If nil, lsp-bridge would try to detect by default."
     conf-toml-mode-hook
     fish-mode-hook
     wat-mode-hook
+    slint-mode-hook
     )
   "The default mode hook to enable lsp-bridge."
   :type '(repeat variable))
@@ -1448,6 +1450,7 @@ So we build this macro to restore postion after code format."
     (when (get-buffer lsp-bridge-name)
       (kill-buffer lsp-bridge-name))
     (setq lsp-bridge-epc-process nil)
+    (setq lsp-bridge-internal-process nil)
     (message "[LSP-Bridge] Process terminated.")))
 
 (defun lsp-bridge--first-start (lsp-bridge-epc-port)
