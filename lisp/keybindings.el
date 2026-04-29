@@ -1,3 +1,4 @@
+
 (defalias 'yes-or-no-p 'y-or-n-p)
 (setq mouse-wheel-scroll-amount '(1))
 
@@ -11,14 +12,11 @@
 ;; input method
 (bind-key "C-\\" 'toggle-input-method)
 
-
 (bind-key "<f1>" 'dired)
 (bind-key "<f2>"
 	  (lambda ()
 	    (interactive)
 	    (dired "~/.emacs.d/lisp/")))
-(bind-key "<f3>" 'lsp-bridge-peek lsp-bridge-mode-map)
-(bind-key "<f4>" 'lsp-bridge-find-def lsp-bridge-mode-map)
 (bind-key "<f5>" 'compile)
 (bind-key "<f7>" 'kmacro-start-macro-or-insert-counter)
 
@@ -46,7 +44,6 @@
 ;; org-mode
 (bind-key "M-p" 'org-redisplay-inline-images)
 (define-key minibuffer-local-map (kbd "C-c C-e") 'embark-export-write)
-
 
 (defun open-init-file()
   (interactive)

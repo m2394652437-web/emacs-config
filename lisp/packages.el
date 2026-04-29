@@ -16,6 +16,7 @@
 
 (use-package paradox)
 (paradox-enable)
+(setq paradox-github-token my-paradox-github-token)
 
 (use-package golden-ratio
   :hook (after-init . golden-ratio-mode)

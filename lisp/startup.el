@@ -8,12 +8,12 @@
 (when (file-exists-p custom-file)
   (load custom-file))
 
-;; (setq package-archives '(("gnu"    . "https://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
-;;                          ("nongnu" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/")
-;;                          ("melpa" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
+(setq package-archives '(("gnu"    . "https://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
+                         ("nongnu" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/")
+                         ("melpa" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
 
-;; ;;"melpa"  . "https://mirrors.tuna.tsinghua.edu.cn/elpa/melpa"
-;; ;;"melpa" . "https://melpa.org/packages/"
+;;"melpa"  . "https://mirrors.tuna.tsinghua.edu.cn/elpa/melpa"
+;;"melpa" . "https://melpa.org/packages/"
 
 (setq package-check-signature nil)
 

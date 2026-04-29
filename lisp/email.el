@@ -1,3 +1,7 @@
+;; (use-package mu4e-alert
+;;   :ensure t)
+;; (mu4e-alert-enable-mode-line-display)
+
 (autoload 'mu4e "mu4e" "Start mu4e" t)
 (autoload 'mu4e-compose-new "mu4e" nil t)
 (autoload 'mu4e-update-mail-and-index "mu4e" nil t)
@@ -49,6 +53,7 @@ mu init --maildir=~/.mail --my-address=example@qq.com --my-address=example@gmail
 "
 
 (with-eval-after-load 'mu4e
+  
   ;; 每 5 分钟自动检查新邮件
   (setq mu4e-update-interval 300)
 

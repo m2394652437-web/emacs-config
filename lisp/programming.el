@@ -66,9 +66,6 @@
 (add-hook 'c-mode-hook 'setup-local-compile-command)
 (add-hook 'c++-mode-hook 'setup-local-compile-command)
 (add-hook 'python-mode-hook 'setup-local-compile-command)
-(add-hook 'c-ts-mode-hook 'setup-local-compile-command)
-(add-hook 'c++-ts-mode-hook 'setup-local-compile-command)
-(add-hook 'python-ts-mode-hook 'setup-local-compile-command)
 
 
 ;; Yasnippet
@@ -84,15 +81,10 @@
 (setq lsp-bridge-python-command
       (expand-file-name "~/.emacs.d/lsp-bridge-env/bin/python3"))
 
-(with-eval-after-load 'lsp-bridge
-  (add-to-list 'lsp-bridge-single-lang-server-mode-list '(c++-ts-mode . "clangd"))
-  (add-to-list 'lsp-bridge-single-lang-server-mode-list '(c-ts-mode . "clangd"))
-  (add-to-list 'lsp-bridge-single-lang-server-mode-list '(python-ts-mode . "pyright")))
-
-;; ;; lang server
-;; (setq lsp-bridge-python-lsp-server "pyright"
-;;       lsp-bridge-c-lsp-server "clangd"
-;;       lsp-bridge-g-lsp-server "glsl_analyzer")
+;; lang server
+(setq lsp-bridge-python-lsp-server "pyright"
+      lsp-bridge-c-lsp-server "clangd"
+      lsp-bridge-g-lsp-server "glsl_analyzer")
 
 (setq lsp-bridge-enable-search-words t
       lsp-bridge-enable-diagnostics t
@@ -133,7 +125,9 @@
           (lambda ()
             (setq lexical-binding t)))
 
+;;high light 
 (use-package tree-sitter-langs)
+(add-hook 'prog-mode-hook 'tree-sitter-hl-mode)
 
 (add-hook 'prog-mode-hook 'hs-minor-mode)
 

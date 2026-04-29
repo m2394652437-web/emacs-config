@@ -21,10 +21,10 @@
 ;;font
 (when (display-graphic-p)
   (add-hook 'window-setup-hook
-    (lambda ()
-      (set-face-attribute 'default nil :font "JetBrains Mono-11.5")      
-      (set-fontset-font t 'han "Maple Mono NF CN-12" nil 'prepend)      
-      )))
+	    (lambda ()
+	      (set-face-attribute 'default nil :font "JetBrains Mono-11.5")      
+	      (set-fontset-font t 'han "Maple Mono NF CN-12" nil 'prepend)      
+	      )))
 ;;end fort
 
 ;;load theme
@@ -38,37 +38,50 @@
   :config
   (solaire-global-mode +1)) 
 
-;;mode line
-;;临时关闭
-(which-function-mode -1)
+;; ;;mode line
+;; ;; spaceline 
+;; ;;简单的占位
+;; (setq-default header-line-format " Emacs")
+;; (setq-default mode-line-format nil)
 
-;;简单的占位
-(setq-default header-line-format " Emacs")
-(setq-default mode-line-format nil)
+;; (use-package spaceline
+;;   :ensure t
+;;   :defer t
+;;   :config
+;;   (require 'spaceline-config)
+;;   (setq spaceline-use-header-line t)
+;;   (spaceline-spacemacs-theme)
+;;   (setq spaceline-buffer-id-function 'buffer-file-path)
+;;   (spaceline-toggle-buffer-id-on)
+;;   (spaceline-toggle-buffer-size-on)
+;;   (spaceline-toggle-major-mode-on)
+;;   (spaceline-toggle-minor-modes-off)
+;;   (setq-default header-line-format '((:eval (spaceline-ml-main))))
+;;   (setq-default mode-line-format nil))
 
-;; spaceline 
-(use-package spaceline
-  :ensure t
-  :defer t
+;; (add-hook 'after-init-hook
+;; 	  (lambda ()
+;; 	    (run-with-idle-timer 0.3 nil
+;; 				 (lambda ()
+;; 				   (require 'spaceline)				   
+;; 				   ))))
+
+(use-package nerd-icons
+  :ensure t)
+
+(use-package doom-modeline
+  :ensure t  ;; 确保这一行存在，它会自动安装/加载包
+  :hook (after-init . doom-modeline-mode)
   :config
-  (require 'spaceline-config)
-  (setq spaceline-use-header-line t)
-  (spaceline-spacemacs-theme)
-  (setq spaceline-buffer-id-function 'buffer-file-path)
-  (spaceline-toggle-buffer-id-on)
-  (spaceline-toggle-buffer-size-on)
-  (spaceline-toggle-major-mode-on)
-  (spaceline-toggle-minor-modes-off)
-  (setq-default header-line-format '((:eval (spaceline-ml-main))))
-  (setq-default mode-line-format nil))
+  (setq doom-modeline-major-mode-icon t)
+  (setq doom-modeline-major-mode-color-icon t)
+  (setq doom-modeline-highlight-modified-buffer-name nil)
+  (setq doom-modeline-lsp-icon t)
+  (setq doom-modeline-buffer-name t)
+  (setq doom-modeline-minor-modes nil)
+  (setq doom-modeline-enable-word-count t)
+  ) 
 
-(add-hook 'after-init-hook
-	  (lambda ()
-	    (run-with-idle-timer 0.3 nil
-				 (lambda ()
-				   (require 'spaceline)				   
-				   (which-function-mode 1)
-				   ))))
-
+(which-function-mode 1)
 
 (provide 'ui)
