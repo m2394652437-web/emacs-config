@@ -15,4 +15,12 @@
   (counsel-imenu))
 (advice-add 'treemacs-select-when-current-window :around #'my/treemacs-use-counsel-imenu)
 
+(use-package treemacs-nerd-icons
+  :config
+  (treemacs-nerd-icons-config))
+
+(use-package treemacs-icons-dired
+  :hook (dired-mode . treemacs-icons-dired-enable-once)
+  :ensure t)
+
 (provide 'file_management)

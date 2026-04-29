@@ -30,7 +30,6 @@
   (projectile-mode +1)
   (setq projectile-switch-project-action 'projectile-vc))
 
-
 (defun setup-local-compile-command ()
   "设置当前buffer的编译命令（根据文件类型）"
   (when buffer-file-name

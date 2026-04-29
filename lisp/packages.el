@@ -17,6 +17,10 @@
 (use-package paradox)
 (paradox-enable)
 (setq paradox-github-token my-paradox-github-token)
+(custom-set-faces
+ '(paradox-mode-line-face ((t (:foreground "#BDBDBD" :weight bold))))
+ '(mode-line-buffer-id ((t (:foreground "#8D6885" :weight bold))))
+ )
 
 (use-package golden-ratio
   :hook (after-init . golden-ratio-mode)
