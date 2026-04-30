@@ -1,7 +1,4 @@
-;;临时提高GC阈值
-(setq gc-cons-threshold 100000000)  
-;;增加进程读取缓冲
-(setq read-process-output-max (* 1024 1024))  
+(use-package magit)
 
 (defun astyle-buffer ()
   (interactive)
@@ -75,7 +72,7 @@
   (yas-global-mode 1))
 ;; end Yasnippet
 
-                   ;;; lsp-bridge
+;;; lsp-bridge
 (add-to-list 'load-path "~/.emacs.d/lisp/lsp-bridge-master")
 (setq lsp-bridge-python-command
       (expand-file-name "~/.emacs.d/lsp-bridge-env/bin/python3"))
@@ -94,9 +91,10 @@
       )
 
 (use-package lsp-bridge
+  :straight nil
   :load-path "~/.emacs.d/lisp/lsp-bridge-master"
   :defer t
-  :hook ((prog-mode . lsp-bridge-mode)
+  :hook (((prog-mode org-mode) . lsp-bridge-mode)
          ;;(lsp-bridge-mode . lsp-bridge-semantic-tokens-mode)
 	 )
   :config
@@ -113,7 +111,6 @@
 
 ;; multiple-cursors
 (use-package multiple-cursors
-  :ensure t
   :defer t
   :bind (("C->" . mc/mark-next-like-this)
          ("C-<" . mc/mark-previous-like-this)
@@ -124,7 +121,8 @@
           (lambda ()
             (setq lexical-binding t)))
 
-;;high light 
+;;high light
+;;need M-x tree-sitter-install-lang first
 (use-package tree-sitter-langs)
 (add-hook 'prog-mode-hook 'tree-sitter-hl-mode)
 

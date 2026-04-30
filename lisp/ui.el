@@ -1,5 +1,7 @@
+(use-package all-the-icons)
+(use-package nerd-icons)
+
 (use-package eshell-git-prompt
-  :ensure t
   :after esh-mode)
 (eshell-git-prompt-use-theme 'powerline)
 
@@ -24,43 +26,39 @@
   (add-hook 'window-setup-hook
 	    (lambda ()
 	      (set-face-attribute 'default nil :font "JetBrains Mono-11.5")      
-	      (set-fontset-font t 'han "Maple Mono NF CN-12" nil 'prepend)      
+	      (set-fontset-font t 'han "Maple Mono NF CN-11.5" nil 'prepend)      
 	      )))
 ;;end fort
 
 ;;load theme
-;;(use-package modus-themes)
-;;(load-theme 'modus-operandi t) 
 (load-theme 'deeper-blue t)
 ;;end load theme
 
-
-(use-package solaire-mode
-  :ensure t
+(use-package solaire-mode  
   :config
   (solaire-global-mode +1)) 
 
 ;;mode line
-(use-package nerd-icons
-  :ensure t)
-
-(use-package telephone-line
-  :ensure t)
-(telephone-line-mode 1)
+(use-package nerd-icons)
 
 (custom-set-faces
  '(mode-line ((t (
 		  :box nil
 		  :underline nil
-		  :background nil
+		  :background unspecified
 		  :foreground "#BDBDBD"
 		  :weight bold))))
+
  '(mode-line-inactive ((t (
 			   :box nil
 			   :underline nil
-			   :background nil
+			   :background unspecified
 			   :foreground "#BDBDBD"
 			   :weight bold))))
+
+ '(mode-line-buffer-id ((t (
+			    :foreground "violet"
+			    :weight bold))))
  
  '(header-line ((t (
 		    :background "#626262"
@@ -70,18 +68,40 @@
 			     :foreground unspecified)))))
 
 (use-package doom-modeline
-  :ensure t
   :hook (after-init . doom-modeline-mode)
   :config
-
   (setq doom-modeline-icon t)
   (setq doom-modeline-major-mode-icon t)
   (setq doom-modeline-major-mode-color-icon t)
+  (setq doom-modeline-buffer-state-icon t)
+  (setq doom-modeline-buffer-modification-icon t)
   (setq doom-modeline-lsp-icon t)
-  (setq doom-modeline-buffer-name t)
-  (setq doom-modeline-highlight-modified-buffer-name t)
-  (setq doom-modeline-minor-modes nil)
+  (setq doom-modeline-persp-icon t)
+  (setq doom-modeline-check-icon t)
+  (setq doom-modeline-check 'auto)
 
+  (setq doom-modeline-vcs-icon t)
+  (setq doom-modeline-vcs-display-function #'doom-modeline-vcs-name)
+  (setq doom-modeline-vcs-state-faces-alist
+      '((needs-update . (doom-modeline-warning bold))
+        (removed . (doom-modeline-urgent bold))
+        (conflict . (doom-modeline-urgent bold))
+        (unregistered . (doom-modeline-urgent bold))))
+  
+  (setq doom-modeline-buffer-name t)
+  (setq doom-modeline-project-name t)
+  (setq doom-modeline-workspace-name t)
+  (setq doom-modeline-persp-name t)
+  (setq doom-modeline-unicode-number t)
+  (setq doom-modeline-highlight-modified-buffer-name t)
+  
+  (setq doom-modeline-column-zero-based t)
+  (setq doom-modeline-position-column-format '("C%c"))
+  (setq doom-modeline-enable-buffer-position nil)
+  
+  (setq doom-modeline-minor-modes nil)
+  (setq doom-modeline-minor-modes nil)
+  
   (setq doom-modeline-selection-info t)
   (setq doom-modeline-enable-word-count nil)
 

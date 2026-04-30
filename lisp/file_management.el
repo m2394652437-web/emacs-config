@@ -2,25 +2,36 @@
 (add-hook 'dired-mode-hook 'dired-omit-mode)
 (add-hook 'dired-mode-hook 'auto-revert-mode)
 
-(use-package treemacs
+(use-package dirvish
+  :straight ( :host github
+	      :repo "alexluigit/dirvish"
+	      :branch "main")
+  ;;:defer t
   :config
-  (treemacs-follow-mode t)
-  (treemacs-filewatch-mode t)
-  (treemacs-git-mode 'extended)
-  (treemacs-filewatch-mode t))
-(use-package treemacs-projectile)
-(use-package treemacs-magit)
+  (dirvish-override-dired-mode)
+  (dirvish-side-follow-mode)
+  (setq dirvish-attributes '(nerd-icons
+			     vc-state))
+  (setq dirvish-side-attributes '(nerd-icons
+				  vc-state)))
 
-(defun my/treemacs-use-counsel-imenu (original-func &rest args)
-  (counsel-imenu))
-(advice-add 'treemacs-select-when-current-window :around #'my/treemacs-use-counsel-imenu)
+(defcustom my-dirvish-side-dir nil
+  "Default directory. If nil, use ~."
+  :group 'dirvish
+  :type '(choice (directory :tag "Directory")
+                 (const :tag "Home" nil)))
 
-(use-package treemacs-nerd-icons
-  :config
-  (treemacs-nerd-icons-config))
+(defun my-dirvish-side-dir-or-home ()
+  (or (and my-dirvish-side-dir (not (string-empty-p my-dirvish-side-dir))
+           my-dirvish-side-dir)
+      "~"))
 
-(use-package treemacs-icons-dired
-  :hook (dired-mode . treemacs-icons-dired-enable-once)
-  :ensure t)
+(defun my-dirvish-side-set-dir ()
+  (interactive)
+  (let ((new-dir (read-directory-name "Dir: " "~")))
+    (setq my-dirvish-side-dir
+          (unless (string-empty-p (string-trim new-dir)) new-dir))
+    (customize-save-variable 'my-dirvish-side-dir my-dirvish-side-dir)))
+  
 
 (provide 'file_management)

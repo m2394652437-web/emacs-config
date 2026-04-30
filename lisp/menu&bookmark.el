@@ -13,8 +13,7 @@
 (global-set-key (kbd "C-c f") 'jump-to-register) 
 
 ;;
-(use-package hydra
-  :ensure t)
+(use-package hydra)
 (defhydra hydra-buffer-menu (:color red
 				    :hint nil)
 "

@@ -11,8 +11,12 @@
 (bind-key "C-P" 'password-store-copy)
 ;; input method
 (bind-key "C-\\" 'toggle-input-method)
-
-(bind-key "<f1>" 'dired)
+;;dirvish
+(with-eval-after-load 'dirvish
+(bind-key "C-x <left>" 'dired-up-directory dirvish-mode-map)
+(bind-key "C-x <right>" 'dirvish-history-forward dirvish-mode-map))
+ 
+ (bind-key "<f1>" 'dired)
 (bind-key "<f2>"
 	  (lambda ()
 	    (interactive)
@@ -57,13 +61,14 @@
 (if (display-graphic-p)
     ;; GUI
     (progn
-      (bind-key "s-a" 'treemacs)
+      ;;(bind-key "s-a" 'dirvish-side)
+      (bind-key "s-a" (lambda () (interactive) (dirvish-side  my-dirvish-side-dir)))
       )
 
   ;; CLI
   (progn
-    (bind-key "M-a" 'treemacs)
-    
+    ;;(bind-key "M-a" 'dirvish-side)
+    (bind-key "M-a" (lambda () (interactive) (dirvish-side my-dirvish-side-dir)))
     )
   )
 ;; end super

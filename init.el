@@ -5,10 +5,10 @@
 (setq tramp-mode nil)
 (setq tramp-gvfs-enabled nil)
 
-(setq gc-cons-threshold 100000000)  
 (add-hook 'after-init-hook
   (lambda ()
-    (setq gc-cons-threshold 800000)))
+    (setq gc-cons-threshold 800000)
+    (message "GC threshold restored to %s" gc-cons-threshold)))
 
 (if (file-exists-p (expand-file-name "lisp/privacy.el" user-emacs-directory))
     (require 'privacy)
