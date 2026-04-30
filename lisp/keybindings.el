@@ -1,4 +1,3 @@
-
 (defalias 'yes-or-no-p 'y-or-n-p)
 (setq mouse-wheel-scroll-amount '(1))
 
@@ -14,8 +13,10 @@
 ;;dirvish
 (with-eval-after-load 'dirvish
 (bind-key "C-x <left>" 'dired-up-directory dirvish-mode-map)
-(bind-key "C-x <right>" 'dirvish-history-forward dirvish-mode-map))
- 
+(bind-key "<tab>" 'dirvish-subtree-toggle dirvish-mode-map)
+(bind-key "C-<tab>" 'dirvish-subtree-clear dirvish-mode-map)
+)
+
  (bind-key "<f1>" 'dired)
 (bind-key "<f2>"
 	  (lambda ()

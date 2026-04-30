@@ -25,21 +25,6 @@
 (setq use-package-always-defer t)
 
 (setq straight-use-package-by-default t)
-
-;; ;; :ensure t -> :straight t
-;; (with-eval-after-load 'use-package
-;;   (defadvice! use-package-ensure-to-straight (args)
-;;     "Convert :ensure to :straight in use-package declarations."
-;;     :filter-args
-;;     (let ((ensure (cadr (memq :ensure args))))
-;;       (if ensure
-;;           (progn
-;;             (setq args (delq :ensure args))
-;;             (if (eq ensure t)
-;;                 (cons :straight (cons t args))
-;;               (cons :straight (cons ensure args))))
-;;         args))))
-
 ;;end straight
 
 (setenv "PYTHON_BASIC_REPL" "1")

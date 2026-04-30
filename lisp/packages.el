@@ -1,33 +1,12 @@
-;; (use-package quelpa
-;;   :ensure t)
+(use-package async)
+(dired-async-mode 1)
+(async-bytecomp-package-mode 1)
+(setq async-bytecomp-allowed-packages '(all))
 
-;; (use-package quelpa-use-package
-;;   :ensure t
-;;   :after quelpa
-;;   :config
-;;   ;; 在此之后才能使用 :quelpa 关键字
-;;   )
+(use-package with-editor)
 
-;; ;; 确保 quelpa-use-package 已经初始化
-;; (eval-when-compile
-;;   (require 'quelpa-use-package))
-
-  ;; :config
-  ;; (quelpa-use-package-activate-advice))
-
-;; (use-package paradox)
-;; (paradox-enable)
-;; (setq paradox-github-token my-paradox-github-token)
-;; (custom-set-faces
-;;  '(paradox-mode-line-face ((t (:foreground "#BDBDBD" :weight bold))))
-;;  '(mode-line-buffer-id ((t (:foreground "#8D6885" :weight bold))))
-;;  )
-
-(use-package async
-  :config
-  (dired-async-mode 1)
-  (async-bytecomp-package-mode 1)
-  (setq async-bytecomp-allowed-packages '(all)))
+(use-package transient
+  :defer nil)  
 
 (use-package clipetty
   :hook (after-init . global-clipetty-mode))
@@ -35,9 +14,10 @@
 (use-package bind-key)
 
 (use-package password-store
-  :straight( :host github
-	     :repo "emacsmirror/password-store"
-	     :branch "main"))
+  :straight nil
+  :defer nil
+  :config
+  (require 'password-store))
 
 (use-package gcmh
   :config

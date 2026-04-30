@@ -1,6 +1,6 @@
 (setq frame-inhibit-implied-resize t)
-(add-to-list 'load-path "~/.emacs.d/lisp/")
-(setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
+(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+(add-to-list 'load-path (expand-file-name "lisp/static_packages" user-emacs-directory))
 
 (setq tramp-mode nil)
 (setq tramp-gvfs-enabled nil)

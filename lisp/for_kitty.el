@@ -1,4 +1,4 @@
-(add-to-list 'load-path "~/.emacs.d/lisp/for_kitty/")
+(add-to-list 'load-path (expand-file-name "lisp/for_kitty" user-emacs-directory))
 
 (require 'kkp)
 (global-kkp-mode 1)

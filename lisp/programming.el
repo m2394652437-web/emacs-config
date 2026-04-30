@@ -73,9 +73,9 @@
 ;; end Yasnippet
 
 ;;; lsp-bridge
-(add-to-list 'load-path "~/.emacs.d/lisp/lsp-bridge-master")
+(add-to-list 'load-path (expand-file-name "lisp/static_packages/lsp-bridge-master" user-emacs-directory))
 (setq lsp-bridge-python-command
-      (expand-file-name "~/.emacs.d/lsp-bridge-env/bin/python3"))
+      (expand-file-name "lsp-bridge-env/bin/python3" user-emacs-directory))
 
 ;; lang server
 (setq lsp-bridge-python-lsp-server "pyright"
@@ -92,7 +92,6 @@
 
 (use-package lsp-bridge
   :straight nil
-  :load-path "~/.emacs.d/lisp/lsp-bridge-master"
   :defer t
   :hook (((prog-mode org-mode) . lsp-bridge-mode)
          ;;(lsp-bridge-mode . lsp-bridge-semantic-tokens-mode)
