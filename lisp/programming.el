@@ -1,21 +1,44 @@
 (use-package magit)
 
-(defun astyle-buffer ()
+;;style
+(defun format-buffer-with-command (command)
+  "使用指定的 COMMAND 格式化当前缓冲区"
   (interactive)
-  (let ((saved-line-number (line-number-at-pos)))
+  (when (buffer-modified-p)
+    (save-buffer))  ; 可选：保存未保存的更改
+  (let ((saved-line-number (line-number-at-pos))
+        (saved-point (point)))
     (shell-command-on-region
      (point-min)
      (point-max)
-     "astyle --style=kr"
+     command
      nil
      t)
-    (goto-line saved-line-number)))
-(global-set-key (kbd "C-f") 'astyle-buffer)
+    (goto-char saved-point)
+    (unless (= saved-line-number (line-number-at-pos))
+      (goto-line saved-line-number))))
 
+;;; C/C++ 使用 astyle (K&R 风格)
+(defun format-c-buffer ()
+  (interactive)
+  (format-buffer-with-command "astyle --style=kr --suffix=none"))
+
+;;; Python 使用 ruff
+(defun format-python-buffer ()
+  (interactive)
+  (format-buffer-with-command "ruff format -"))
+
+;;; 快捷键绑定
+;; C 模式（c-mode， c++-mode， c-or-c++-mode）
 (add-hook 'c-mode-common-hook
-	  (lambda ()
-	    (define-key c-mode-map (kbd "C-f") 'astyle-buffer)
-	    (define-key c++-mode-map (kbd "C-f") 'astyle-buffer)))
+          (lambda ()
+            (local-set-key (kbd "C-f") 'format-c-buffer)))
+
+;; Python 模式（python-mode）
+(add-hook 'python-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-f") 'format-python-buffer)))
+;;end style
 
 (use-package projectile
   :ensure t

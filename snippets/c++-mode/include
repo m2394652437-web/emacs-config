@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: #inlude <>
-# key: #inc
-# --
-
-#include <${1}
-$0
