@@ -30,6 +30,7 @@
 	      )))
 ;;end fort
 
+
 ;;load theme
 (load-theme 'deeper-blue t)
 ;;end load theme
@@ -117,5 +118,12 @@
               (setq-default mode-line-format nil)
               )))
 ;;end mode line
+
+(use-package olivetti
+  :straight ( :host github
+	      :repo "rnkn/olivetti")
+  :hook ((text-mode org-mode) . olivetti-mode)
+  :config
+  (add-hook 'org-mode-hook (lambda () (olivetti-set-width 100))))
 
 (provide 'ui)

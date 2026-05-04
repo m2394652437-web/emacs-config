@@ -14,7 +14,7 @@
 
 (add-hook 'c-mode-common-hook
 	  (lambda ()
-	    (define-key simpc-mode-map (kbd "C-f") 'astyle-buffer)
+	    (define-key c-mode-map (kbd "C-f") 'astyle-buffer)
 	    (define-key c++-mode-map (kbd "C-f") 'astyle-buffer)))
 
 (use-package projectile
@@ -72,8 +72,12 @@
   (yas-global-mode 1))
 ;; end Yasnippet
 
+(straight-use-package
+ '(popon :type git :repo "https://codeberg.org/akib/emacs-popon.git"))
+ 
+
 ;;; lsp-bridge
-(add-to-list 'load-path (expand-file-name "lisp/static_packages/lsp-bridge-master" user-emacs-directory))
+(add-to-list 'load-path (expand-file-name "lisp/static-packages/lsp-bridge-master" user-emacs-directory))
 (setq lsp-bridge-python-command
       (expand-file-name "lsp-bridge-env/bin/python3" user-emacs-directory))
 
@@ -104,9 +108,9 @@
 
   ;; if in CLI
   (unless (display-graphic-p)
-    (require 'acm-terminal)
-    (use-package popon)))
-;; end lsp-bridge
+    (require 'acm-terminal))
+  )
+;;end lsp bridge
 
 ;; multiple-cursors
 (use-package multiple-cursors

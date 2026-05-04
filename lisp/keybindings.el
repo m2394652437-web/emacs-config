@@ -1,5 +1,8 @@
+(when (fboundp 'pixel-scroll-precision-mode)
+  (pixel-scroll-precision-mode 1)
+  (setq pixel-scroll-precision-use-momentum t)) 
+
 (defalias 'yes-or-no-p 'y-or-n-p)
-(setq mouse-wheel-scroll-amount '(1))
 
 (bind-key "C-V" 'yank)
 (bind-key "C-Z" 'undo) 
@@ -22,6 +25,8 @@
 	  (lambda ()
 	    (interactive)
 	    (dired "~/.emacs.d/lisp/")))
+(bind-key "<f3>" 'lsp-bridge-peek)
+(bind-key "<f4>" 'lsp-bridge-find-def)
 (bind-key "<f5>" 'compile)
 (bind-key "<f7>" 'kmacro-start-macro-or-insert-counter)
 
@@ -52,7 +57,7 @@
 
 (defun open-init-file()
   (interactive)
-  (find-file-other-frame "~/.emacs.d/init.el"))
+  (find-file "~/.emacs.d/init.el"))
 
 (defun hotkeys()
   (interactive)

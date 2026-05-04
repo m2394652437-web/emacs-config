@@ -3,13 +3,10 @@
 # key: funhelp
 # --
 /**
- *@brief $1
+ *@brief
+ *$1
  *
- *$2
- *
- *@param $3
- *@return $4
- *
- *@see $5
+ *@param $2
+ *@return $3
  */
  
