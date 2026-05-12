@@ -90,41 +90,47 @@
 ;; Yasnippet
 (use-package yasnippet
   :ensure t
-  :defer t
+  :defer nil
   :config
-  (yas-global-mode 1))
+  (yas-global-mode 1)
+  (add-hook 'snippet-mode-hook (lambda () (tree-sitter-mode -1))) ;
+  )
 ;; end Yasnippet
-
-(straight-use-package
- '(popon :type git :repo "https://codeberg.org/akib/emacs-popon.git"))
- 
+                      
+(unless (display-graphic-p)
+  (straight-use-package
+   '(popon :host nil :repo "https://codeberg.org/akib/emacs-popon.git"))
+  (straight-use-package
+   '(acm-terminal :host github :repo "twlz0ne/acm-terminal")))
 
 ;;; lsp-bridge
-(add-to-list 'load-path (expand-file-name "lisp/static-packages/lsp-bridge-master" user-emacs-directory))
-(setq lsp-bridge-python-command
-      (expand-file-name "lsp-bridge-env/bin/python3" user-emacs-directory))
-
-;; lang server
-(setq lsp-bridge-python-lsp-server "pyright"
-      lsp-bridge-c-lsp-server "clangd"
-      lsp-bridge-g-lsp-server "glsl_analyzer")
-
-(setq lsp-bridge-enable-search-words t
-      lsp-bridge-enable-diagnostics t
-      lsp-bridge-enable-inlay-hint t
-      lsp-bridge-enable-auto-import nil
-      lsp-bridge-enable-log nil
-      acm-enable-comment-parse nil
-      )
-
 (use-package lsp-bridge
-  :straight nil
+    :straight '(lsp-bridge :type git :host github :repo "manateelazycat/lsp-bridge"
+            :files (:defaults "*.el" "*.py" "acm" "core" "langserver" "multiserver" "resources")
+            :build (:not compile))
   :defer t
   :hook (((prog-mode org-mode) . lsp-bridge-mode)
          ;;(lsp-bridge-mode . lsp-bridge-semantic-tokens-mode)
 	 )
   :config
   ;; glsl server
+
+  (setq lsp-bridge-python-command
+	(expand-file-name "lsp-bridge-env/bin/python3" user-emacs-directory))
+
+  ;; lang server
+  (setq lsp-bridge-python-lsp-server "pyright"
+	lsp-bridge-c-lsp-server "clangd"
+	lsp-bridge-g-lsp-server "glsl_analyzer")
+ 
+  (setq lsp-bridge-enable-search-words t
+	lsp-bridge-enable-diagnostics t
+	lsp-bridge-enable-inlay-hint t
+	lsp-bridge-enable-auto-import nil
+	lsp-bridge-enable-log nil
+	acm-enable-comment-parse nil
+	)
+  
   (with-eval-after-load 'lsp-bridge
     (add-to-list 'lsp-bridge-single-lang-server-mode-list
 		 '(glsl-mode . "glsl_analyzer")))
@@ -139,7 +145,7 @@
 (use-package multiple-cursors
   :defer t
   :bind (("C->" . mc/mark-next-like-this)
-         ("C-<" . mc/mark-previous-like-this)
+         ("C-<" . mc/mark-pruevious-like-this)
          ("C-c C-<" . mc/mark-all-like-this)))
 
 ;; 自动清理临时文件

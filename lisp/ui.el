@@ -25,14 +25,14 @@
 (when (display-graphic-p)
   (add-hook 'window-setup-hook
 	    (lambda ()
-	      (set-face-attribute 'default nil :font "JetBrains Mono-11.5")      
-	      (set-fontset-font t 'han "Maple Mono NF CN-11.5" nil 'prepend)      
+	      (set-face-attribute 'default nil :font "JetBrains Mono-10")      
+	      (set-fontset-font t 'han "Maple Mono NF CN-10" nil 'prepend)      
 	      )))
 ;;end fort
 
-
 ;;load theme
-(load-theme 'deeper-blue t)
+;;(load-theme 'deeper-blue t)
+(load-theme 'modus-operandi t)
 ;;end load theme
 
 (use-package solaire-mode  
@@ -118,12 +118,5 @@
               (setq-default mode-line-format nil)
               )))
 ;;end mode line
-
-(use-package olivetti
-  :straight ( :host github
-	      :repo "rnkn/olivetti")
-  :hook ((text-mode org-mode) . olivetti-mode)
-  :config
-  (add-hook 'org-mode-hook (lambda () (olivetti-set-width 100))))
 
 (provide 'ui)

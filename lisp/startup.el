@@ -1,3 +1,5 @@
+(setq ring-bell-function 'ignore)
+
 ;;; startup.el
 (setq gc-cons-threshold 33554432
       undo-auto-current-boundary-timer nil)

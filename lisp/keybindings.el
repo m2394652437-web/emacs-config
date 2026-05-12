@@ -9,6 +9,11 @@
 (bind-key "C-k" 'kill-line)
 (bind-key "C-a" 'back-to-indentation)
 (bind-key "C-<tab>" 'hs-toggle-hiding)
+;;org
+(with-eval-after-load 'org
+(bind-key "C-<return>" 'org-insert-todo-heading-respect-content org-mode-map)
+(bind-key "C-`" 'org-latex-preview org-mode-map)
+)
 ;; password store
 (bind-key "C-P" 'password-store-copy)
 ;; input method
@@ -16,11 +21,17 @@
 ;;dirvish
 (with-eval-after-load 'dirvish
 (bind-key "C-x <left>" 'dired-up-directory dirvish-mode-map)
-(bind-key "<tab>" 'dirvish-subtree-toggle dirvish-mode-map)
 (bind-key "C-<tab>" 'dirvish-subtree-clear dirvish-mode-map)
+(bind-key "<tab>" 'dirvish-subtree-toggle dirvish-mode-map)
 )
 
- (bind-key "<f1>" 'dired)
+(bind-key  "C-c m" 'bookmark-set)    
+(bind-key  "C-c g" 'bookmark-jump)   
+;; 寄存器快速跳转
+(bind-key "C-c s" 'point-to-register)
+(bind-key "C-c f" 'jump-to-register) 
+
+(bind-key "<f1>" 'dired)
 (bind-key "<f2>"
 	  (lambda ()
 	    (interactive)
@@ -38,10 +49,9 @@
 ;; kill then yank
 (bind-key "M-k" 'my-kill-then-yank)
 (bind-key "M-s" 'eshell)
-(bind-key "M-P" 'password-store-copy)
-(bind-key "M-a" 'treemacs)
 (bind-key "M-," 'ace-window)
 (bind-key "M-." 'other-window)
+(bind-key "M-P" 'password-store-copy)
 (bind-key "M-b" 'hydra-buffer-menu/body)
 (bind-key "M-]"
 (lambda ()

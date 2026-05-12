@@ -32,6 +32,7 @@
       (setq my-dirvish-side-dir
             (unless (string-empty-p (string-trim new-dir)) new-dir))
       (customize-save-variable 'my-dirvish-side-dir my-dirvish-side-dir)))
+
   )  
 
 (provide 'file-management)

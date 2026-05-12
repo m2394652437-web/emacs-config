@@ -10,4 +10,9 @@
 ;;end if 
 )
 
+(unless (display-graphic-p)                                                                                                                                                                                                      
+  (define-key input-decode-map "\e[9u" [tab])
+  (define-key input-decode-map "\e[9;2u" [backtab])
+  (define-key input-decode-map "\e[9;5u" [C-tab]))    
+
 (provide 'for-kitty)

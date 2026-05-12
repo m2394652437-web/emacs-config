@@ -1,18 +1,3 @@
-;; counsel
-(use-package counsel
-  :config
-  (global-set-key (kbd "C-c i") 'counsel-imenu)
-  (global-set-key (kbd "C-c b") 'counsel-bookmark)
-  (global-set-key (kbd "C-c t") 'counsel-recentf))
-
-(global-set-key (kbd "C-c m") 'bookmark-set)    
-(global-set-key (kbd "C-c g") 'bookmark-jump)   
-
-;; 寄存器快速跳转
-(global-set-key (kbd "C-c s") 'point-to-register)
-(global-set-key (kbd "C-c f") 'jump-to-register) 
-
-;;
 (use-package hydra)
 (defhydra hydra-buffer-menu (:color red
 				    :hint nil)
@@ -28,7 +13,7 @@ _l_: lines
   ("p" mc/mark-previous-like-this)
   ("a" mc/mark-all-like-this)
   ("l" mc/edit-lines)
-  ("b" counsel-imenu)
+  ("b" consult-imenu)
   ("ESC" nil "cancel"))
 
 (defun freedom-context-menu (event)

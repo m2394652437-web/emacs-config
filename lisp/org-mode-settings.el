@@ -24,15 +24,26 @@
      (latex . t)
      (shell . t)
      (emacs-lisp . t)))
-
-  (custom-set-faces
-   '(org-block ((t (:background "#f0f0f0"))))) 
+  
+  (setq org-latex-preview-process-default 'dvisvgm)
+  (setq org-latex-preview-mode-display-live t)
+  (setq org-latex-preview-mode-update-delay 0.25)
+  
+  ;; (custom-set-faces
+  ;;  '(org-block ((t (:background "#f0f0f0"))))) 
 
   ;; (add-hook 'org-mode-hook
   ;; 	    (lambda ()
   ;; 	      (face-remap-add-relative 'default
-  ;; 				       '(:background "#fdf6e3" :foreground "#657b83"))))  
-)  
+  ;; 				       '(:background "#fdf6e3" :foreground "#657b83"))))
+  
+  (setq org-agenda-files
+	'("~/Documents/My_files/todo.org"))
+
+  (setq org-log-done 'time)
+
+  )  
+
 ;;end org basic setting
 
 (use-package org-ql
@@ -41,13 +52,6 @@
   :config
   (require 'org-ql-search)
   (require 'org-ql-view))
-
-;; org-fragtog
-(use-package org-fragtog
-  :after org
-  :hook (org-mode . (lambda ()
-		      (when (display-graphic-p)
-			(org-fragtog-mode 1)))))
 
 (use-package htmlize
   :defer t)
@@ -108,6 +112,20 @@
 
 (use-package org-roam-ui
   :defer t)
+
+(use-package cdlatex
+  :hook (org-mode . org-cdlatex-mode))
+
+;;export typest
+(use-package ox-typst
+  :hook (org-mode . (lambda () (require 'ox-typst))))
+
+;; (use-package olivetti
+;;   :straight ( :host github
+;; 	      :repo "rnkn/olivetti")
+;;   :hook ((text-mode org-mode) . olivetti-mode)
+;;   :config
+;;   (add-hook 'org-mode-hook (lambda () (olivetti-set-width 100))))
 
 (message "org-mode-settings.el loaded successfully!")
 (provide 'org-mode-settings)

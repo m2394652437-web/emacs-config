@@ -30,4 +30,4 @@
 (require 'modes)
 (require 'email)
 (require 'eshell-config)
-
+(require 'ai)

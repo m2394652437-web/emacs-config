@@ -42,15 +42,6 @@
   :init (benchmark-init/activate)
   :hook (after-init . benchmark-init/deactivate))
 
-(use-package vertico
-  :hook (after-init . vertico-mode))
-
-(use-package orderless
-  :init
-  (setq completion-styles '(orderless)))
-(setq vertico-count 6) 
-(setq vertico-fast t)
-
 (use-package drag-stuff
   :bind(("<M-up>". drag-stuff-up)
 	("<M-down>". drag-stuff-down)))
@@ -66,9 +57,26 @@
 (use-package ace-window)
 ;;end ace window
 
+(use-package marginalia
+  :ensure t
+  :config
+  (marginalia-mode))
+
+(use-package vertico
+  :hook (after-init . vertico-mode))
+
+(use-package orderless
+  :init
+  (setq completion-styles '(orderless)))
+(setq vertico-count 6) 
+(setq vertico-fast t)
+
 (use-package embark)
+(use-package embark-consult)
 (use-package wgrep)
 (setq wgrep-auto-save-buffer t)
+
+(use-package consult)
 
 (eval-after-load
     'consult
