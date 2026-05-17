@@ -9,22 +9,41 @@
 (bind-key "C-k" 'kill-line)
 (bind-key "C-a" 'back-to-indentation)
 (bind-key "C-<tab>" 'hs-toggle-hiding)
-(bind-key "C-<backspace>"
-            (lambda (arg)
-              (interactive "p")
-              (delete-region (point) (progn (backward-word arg) (point)))))
+
+;;smart delete region
+(defun delete-word-no-copy ()
+  (interactive)
+  (let ((start (point))
+        (end (save-excursion
+               (backward-word 1)
+               (point))))
+    (delete-region end start)))
+
+(defun smart-delete-spaces-to-word ()
+  (interactive)
+  (let ((orig-pos (point)))
+    (skip-chars-backward " \t")
+    (if (= (point) orig-pos)
+        (delete-word-no-copy)           
+      (delete-region (point) orig-pos))))
+
+(global-set-key (kbd "C-<backspace>") 'smart-delete-spaces-to-word)
+
 ;;org
 (with-eval-after-load 'org
 (bind-key "C-<return>" 'org-insert-todo-heading-respect-content org-mode-map)
 (bind-key "C-`" 'org-latex-preview org-mode-map)
 )
+
 ;; password store
 (bind-key "C-P" 'password-store-copy)
 ;; input method
 (bind-key "C-\\" 'toggle-input-method)
+
 ;;dirvish
 (with-eval-after-load 'dirvish
-(bind-key "C-x <left>" 'dired-up-directory dirvish-mode-map)
+(bind-key "<left>" 'dired-up-directory dirvish-mode-map)
+(bind-key "<right>" 'dired-find-file dirvish-mode-map)
 (bind-key "C-<tab>" 'dirvish-subtree-clear dirvish-mode-map)
 (bind-key "<tab>" 'dirvish-subtree-toggle dirvish-mode-map)
 )
@@ -35,15 +54,17 @@
 (bind-key "C-c s" 'point-to-register)
 (bind-key "C-c f" 'jump-to-register) 
 
-(bind-key "<f1>" 'dirvish)
-(bind-key "<f2>"
-	  (lambda ()
-	    (interactive)
-	    (dirvish "~/.emacs.d/lisp/")))
+(bind-key "<f1>" 'dired)
+(bind-key "<f2>" 'ibuffer)
 (bind-key "<f3>" 'lsp-bridge-peek)
 (bind-key "<f4>" 'lsp-bridge-find-def)
 (bind-key "<f5>" 'compile)
 (bind-key "<f7>" 'kmacro-start-macro-or-insert-counter)
+
+(bind-key "M-<f2>"
+	  (lambda ()
+	    (interactive)
+	    (dired "~/.emacs.d/lisp/")))
 
 (defun my-kill-then-yank ()
   (interactive)

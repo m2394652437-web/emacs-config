@@ -34,7 +34,7 @@
 ;;   (golden-ratio-exclude-buffer-regexp '("*SIDE")))
 
 (use-package consult
-    :bind (("C-s" . consult-line)))
+  :bind (("C-s" . consult-line)))
 
 (use-package markdown-mode)
 
@@ -51,7 +51,7 @@
 ;; (use-package flycheck
 ;;   :hook(after-init . global-flycheck-mode))
 
-;better buffer control
+					;better buffer control
 
 ;;ace window 
 (use-package ace-window)
@@ -71,8 +71,15 @@
 (setq vertico-count 6) 
 (setq vertico-fast t)
 
+;; (use-package which-key
+;;   :defer nil
+;;   :ensure t
+;;   :config
+;;   (which-key-mode))
+
 (use-package embark)
-(use-package embark-consult)
+(use-package embark-consult
+  :after embark)
 (use-package wgrep)
 (setq wgrep-auto-save-buffer t)
 

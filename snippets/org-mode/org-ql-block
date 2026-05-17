@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: org-ql-block
+# key: ql
+# --
+#+BEGIN: org-ql :query "tags:$1" :columns (heading)
+#+END:

@@ -2,8 +2,14 @@
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 (add-to-list 'load-path (expand-file-name "lisp/static-packages" user-emacs-directory))
 
+(setq make-backup-files nil)
+(setq auto-save-default nil)
+
 (setq tramp-mode t)
 (setq tramp-gvfs-enabled t)
+
+(setq long-line-threshold 100000)
+(setq long-line-optimizations-region-size 500000)
 
 (add-hook 'after-init-hook
   (lambda ()
@@ -21,6 +27,7 @@
 (require 'keybindings)
 (require 'packages)
 (require 'file-management)
+(require 'buffer-management)
 (require 'insert)
 (require 'programming)
 (require 'ui)
