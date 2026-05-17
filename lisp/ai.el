@@ -5,20 +5,6 @@
 (use-package inheritenv
   :straight (:type git :host github :repo "purcell/inheritenv"))
 
-;; ;; for eat terminal backend:
-;; (use-package eat
-;;   :straight (:type git
-;;                    :host codeberg
-;;                    :repo "akib/emacs-eat"
-;;                    :files ("*.el" ("term" "term/*.el") "*.texi"
-;;                            "*.ti" ("terminfo/e" "terminfo/e/*")
-;;                            ("terminfo/65" "terminfo/65/*")
-;;                            ("integration" "integration/*")
-;;                            (:exclude ".dir-locals.el" "*-tests.el"))))
-
-;; for vterm terminal backend:
-;;(use-package vterm :straight t)
-
 ;; for ghostel terminal backend (libghostty):
 (use-package ghostel
   :straight (:type git :host github :repo "dakra/ghostel"))

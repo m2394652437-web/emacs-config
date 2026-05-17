@@ -9,6 +9,10 @@
 (bind-key "C-k" 'kill-line)
 (bind-key "C-a" 'back-to-indentation)
 (bind-key "C-<tab>" 'hs-toggle-hiding)
+(bind-key "C-<backspace>"
+            (lambda (arg)
+              (interactive "p")
+              (delete-region (point) (progn (backward-word arg) (point)))))
 ;;org
 (with-eval-after-load 'org
 (bind-key "C-<return>" 'org-insert-todo-heading-respect-content org-mode-map)
@@ -31,11 +35,11 @@
 (bind-key "C-c s" 'point-to-register)
 (bind-key "C-c f" 'jump-to-register) 
 
-(bind-key "<f1>" 'dired)
+(bind-key "<f1>" 'dirvish)
 (bind-key "<f2>"
 	  (lambda ()
 	    (interactive)
-	    (dired "~/.emacs.d/lisp/")))
+	    (dirvish "~/.emacs.d/lisp/")))
 (bind-key "<f3>" 'lsp-bridge-peek)
 (bind-key "<f4>" 'lsp-bridge-find-def)
 (bind-key "<f5>" 'compile)
@@ -48,7 +52,7 @@
 
 ;; kill then yank
 (bind-key "M-k" 'my-kill-then-yank)
-(bind-key "M-s" 'eshell)
+(bind-key "M-s" 'ghostel)
 (bind-key "M-," 'ace-window)
 (bind-key "M-." 'other-window)
 (bind-key "M-P" 'password-store-copy)

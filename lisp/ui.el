@@ -25,7 +25,7 @@
 (when (display-graphic-p)
   (add-hook 'window-setup-hook
 	    (lambda ()
-	      (set-face-attribute 'default nil :font "JetBrains Mono-10")      
+	      (set-face-attribute 'default nil :font "Fira Code-10")      
 	      (set-fontset-font t 'han "Maple Mono NF CN-10" nil 'prepend)      
 	      )))
 ;;end fort

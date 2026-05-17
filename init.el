@@ -2,8 +2,8 @@
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 (add-to-list 'load-path (expand-file-name "lisp/static-packages" user-emacs-directory))
 
-(setq tramp-mode nil)
-(setq tramp-gvfs-enabled nil)
+(setq tramp-mode t)
+(setq tramp-gvfs-enabled t)
 
 (add-hook 'after-init-hook
   (lambda ()

@@ -54,7 +54,15 @@
   "设置当前buffer的编译命令（根据文件类型）"
   (when buffer-file-name
     (let* ((dir (file-name-directory buffer-file-name))
-           (ext (file-name-extension buffer-file-name)))
+           (ext (file-name-extension buffer-file-name))
+           (proj-root (condition-case nil
+                          (projectile-project-root)
+                        (error nil)))
+           (cd-prefix (if (and proj-root
+                               (not (string= (expand-file-name dir)
+                                             (expand-file-name proj-root))))
+                          (concat "cd " (shell-quote-argument proj-root) " && ")
+                        "")))
       (cond
        ;; C 文件
        ((string= ext "c")
@@ -63,7 +71,8 @@
                (c-files (directory-files dir nil "\\.c$")))
           (when c-files
             (setq-local compile-command
-                        (concat "gcc "
+                        (concat cd-prefix
+                                "gcc "
                                 (mapconcat #'shell-quote-argument c-files " ")
                                 " -o " output-name)))))
        ;; C++ 文件
@@ -71,13 +80,15 @@
         (let ((cpp-files (directory-files dir nil "\\.cpp$")))
           (when cpp-files
             (setq-local compile-command
-                        (concat "g++ "
+                        (concat cd-prefix
+                                "g++ "
                                 (mapconcat #'shell-quote-argument cpp-files " ")
                                 " -o main")))))
        ;; Python 文件
        ((string= ext "py")
         (setq-local compile-command
-                    (concat "python3 "
+                    (concat cd-prefix
+                            "python3 "
                             (shell-quote-argument
                              (file-name-nondirectory buffer-file-name)))))))))
 
