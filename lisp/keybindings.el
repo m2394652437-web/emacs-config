@@ -42,6 +42,7 @@
 
 ;;dirvish
 (with-eval-after-load 'dirvish
+(bind-key  "C-h" 'dired-omit-mode dirvish-mode-map)
 (bind-key "<left>" 'dired-up-directory dirvish-mode-map)
 (bind-key "<right>" 'dired-find-file dirvish-mode-map)
 (bind-key "C-<tab>" 'dirvish-subtree-clear dirvish-mode-map)

@@ -1,4 +1,6 @@
-(use-package magit)
+(use-package magit
+  :straight ( :host github
+	      :repo "magit/magit"))
 
 ;;style
 (defun format-buffer-with-command (command)
@@ -63,6 +65,7 @@
                                              (expand-file-name proj-root))))
                           (concat "cd " (shell-quote-argument proj-root) " && ")
                         "")))
+
       (cond
        ;; C 文件
        ((string= ext "c")
@@ -71,10 +74,11 @@
                (c-files (directory-files dir nil "\\.c$")))
           (when c-files
             (setq-local compile-command
-                        (concat cd-prefix
+			(concat cd-prefix
                                 "gcc "
                                 (mapconcat #'shell-quote-argument c-files " ")
                                 " -o " output-name)))))
+ 
        ;; C++ 文件
        ((string= ext "cpp")
         (let ((cpp-files (directory-files dir nil "\\.cpp$")))
@@ -84,6 +88,7 @@
                                 "g++ "
                                 (mapconcat #'shell-quote-argument cpp-files " ")
                                 " -o main")))))
+
        ;; Python 文件
        ((string= ext "py")
         (setq-local compile-command

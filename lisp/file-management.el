@@ -1,6 +1,13 @@
 (global-auto-revert-mode 1)
 
-;;用dired时省略emcas自动备份文件
+(setq dired-omit-files 
+      (concat "\\`[#.]"      
+              "\\|" 
+              "\\`.*[~#]\\'" 
+              "\\|" 
+              "\\`\\.\\.\\'\\'" 
+              ))
+
 (add-hook 'dired-mode-hook 'dired-omit-mode)
 (add-hook 'dired-mode-hook 'auto-revert-mode)
 

@@ -23,7 +23,6 @@
 
 (require 'startup)
 (require 'for-kitty)
-(require 'utils)
 (require 'keybindings)
 (require 'packages)
 (require 'file-management)

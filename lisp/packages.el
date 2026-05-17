@@ -25,7 +25,6 @@
   (setq gcmh-idle-delay 15)
   (gcmh-mode 1))
 
-
 ;; (use-package golden-ratio
 ;;   :hook (after-init . golden-ratio-mode)
 ;;   :custom

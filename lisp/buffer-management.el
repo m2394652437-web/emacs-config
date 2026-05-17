@@ -9,20 +9,22 @@
   (setq ibuffer-display-summary nil)
   (setq ibuffer-show-empty-filter-groups nil)
   
-  (setq ibuffer-formats
-	'((mark modified read-only locked " "
-		(name 18 18 :left :elide)  
-		" "
-		(size 9 -1 :right)         
-		" "
-		)))
+  (setq nerd-icons-ibuffer-formats
+        '((mark modified locked " "
+            (icon 2 2)
+            (name 18 18 :left :elide)
+            " "
+            (size-h 9 -1 :right)
+            " "
+            (mode+ 16 16 :left :elide))
+          (mark " " (name 16 -1))))
 
   (setq ibuffer-saved-filter-groups
 	'(("group"
 	   ("c" (or (mode . c-mode)))
 	   ("cpp" (or (mode . c++-mode)))
 	   ("python" (or (mode . python-mode)))
-	   ("elisp" (or (mode . elisp-mode)))	 
+	   ("elisp" (or (mode . emacs-lisp-mode)))	 
 	   ("other programs" (or (derived-mode . prog-mode)))
            ("orgs" (or (mode . org-mode)))
            ("others" (or (name . "^\\*.*\\*$")
