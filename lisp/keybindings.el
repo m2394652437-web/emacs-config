@@ -10,6 +10,11 @@
 (bind-key "C-a" 'back-to-indentation)
 (bind-key "C-<tab>" 'hs-toggle-hiding)
 
+(bind-key "C-}" 'shrink-window-horizontally)
+(bind-key "C-{" 'enlarge-window-horizontally)
+(bind-key "C-:" 'enlarge-window)
+(bind-key "C-\"" 'shrink-window)
+
 ;;smart delete region
 (defun delete-word-no-copy ()
   (interactive)

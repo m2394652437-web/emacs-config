@@ -42,6 +42,9 @@
   :hook (after-init . benchmark-init/deactivate))
 
 (use-package drag-stuff
+  :straight ( :host github
+	      :repo "rejeep/drag-stuff.el"
+	      :branch "master")
   :bind(("<M-up>". drag-stuff-up)
 	("<M-down>". drag-stuff-down)))
 

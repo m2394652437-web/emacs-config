@@ -7,6 +7,7 @@
 
 (setq tramp-mode t)
 (setq tramp-gvfs-enabled t)
+(setq tramp-default-remote-shell "/bin/sh")
 
 (setq long-line-threshold 100000)
 (setq long-line-optimizations-region-size 500000)
@@ -22,18 +23,20 @@
   (message "No privacy configuration found. "))
 
 (require 'startup)
-(require 'for-kitty)
 (require 'keybindings)
 (require 'packages)
 (require 'file-management)
 (require 'buffer-management)
 (require 'insert)
 (require 'programming)
-(require 'ui)
-(require 'org-mode-settings)
-(require 'custom)
-(require 'menu&bookmark)
+(require 'for-shell)
 (require 'modes)
+(require 'menu&bookmark)
+(require 'ui)
+(require 'custom)
+
+;;not for server
+(require 'for-kitty)
+(require 'org-mode-settings)
 (require 'email)
-(require 'eshell-config)
 (require 'ai)

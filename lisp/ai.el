@@ -5,10 +5,6 @@
 (use-package inheritenv
   :straight (:type git :host github :repo "purcell/inheritenv"))
 
-;; for ghostel terminal backend (libghostty):
-(use-package ghostel
-  :straight (:type git :host github :repo "dakra/ghostel"))
-
 ;; install claude-code.el, using :depth 1 to reduce download size:
 (use-package claude-code
   :straight (:type git :host github :repo "stevemolitor/claude-code.el" :branch "main" :depth 1

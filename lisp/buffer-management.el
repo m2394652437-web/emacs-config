@@ -27,8 +27,8 @@
 	   ("elisp" (or (mode . emacs-lisp-mode)))	 
 	   ("other programs" (or (derived-mode . prog-mode)))
            ("orgs" (or (mode . org-mode)))
-           ("others" (or (name . "^\\*.*\\*$")
-			 (name . "^\\*scratch\\*$"))))))
+           ("magit" (or (mode . magit-status-mode)))
+	   )))
 
   (add-hook 'ibuffer-hook
             (lambda ()

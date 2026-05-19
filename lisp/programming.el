@@ -137,7 +137,7 @@
   ;; lang server
   (setq lsp-bridge-python-lsp-server "pyright"
 	lsp-bridge-c-lsp-server "clangd"
-	lsp-bridge-g-lsp-server "glsl_analyzer")
+	)
  
   (setq lsp-bridge-enable-search-words t
 	lsp-bridge-enable-diagnostics t
@@ -149,8 +149,11 @@
   
   (with-eval-after-load 'lsp-bridge
     (add-to-list 'lsp-bridge-single-lang-server-mode-list
-		 '(glsl-mode . "glsl_analyzer")))
+		 '(glsl-mode . "glsl_analyzer"))
+    (add-to-list 'lsp-bridge-single-lang-server-mode-list
+		 '(bash-mode . "bash-language-server")))
 
+  
   ;; if in CLI
   (unless (display-graphic-p)
     (require 'acm-terminal))

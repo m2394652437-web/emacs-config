@@ -11,6 +11,10 @@
 (add-hook 'dired-mode-hook 'dired-omit-mode)
 (add-hook 'dired-mode-hook 'auto-revert-mode)
 
+;;解决无法打开中文名文件夹
+(setq dired-listing-switches
+      "-l --almost-all --human-readable --group-directories-first --quoting-style=literal")
+
 (use-package dirvish
   :straight ( :host github
 	      :repo "alexluigit/dirvish"
@@ -19,7 +23,7 @@
   :config
   (dirvish-override-dired-mode)
   (dirvish-side-follow-mode)
-  (setq dirvish-attributes '(nerd-icons			    
+  (setq dirvish-attributes '(nerd-icons
 			     file-size
 			     ))
   (setq dirvish-side-attributes '(nerd-icons))

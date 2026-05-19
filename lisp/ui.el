@@ -23,12 +23,10 @@
 
 ;;font
 (when (display-graphic-p)
-  (add-hook 'window-setup-hook
-	    (lambda ()
-	      (set-face-attribute 'default nil :font "Fira Code-10")      
-	      (set-fontset-font t 'han "Maple Mono NF CN-10" nil 'prepend)      
-	      )))
-;;end fort
+  (set-face-attribute 'default nil :font "Fira Code-10")
+  ;;(set-fontset-font t 'han "Maple Mono NF CN-10" nil 'prepend)
+  )
+;;end font
 
 ;;load theme
 ;;(load-theme 'deeper-blue t)
@@ -38,6 +36,9 @@
 (use-package solaire-mode  
   :config
   (solaire-global-mode +1)) 
+
+
+(set-face-attribute 'font-lock-function-name-face nil :weight 'bold)
 
 ;;mode line
 (use-package nerd-icons)
