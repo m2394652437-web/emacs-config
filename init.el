@@ -22,6 +22,8 @@
   (require 'privacy-example)
   (message "No privacy configuration found. "))
 
+;;启用service 需要 ./setup-service.sh
+
 (require 'startup)
 (require 'keybindings)
 (require 'packages)

@@ -14,7 +14,6 @@
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
-(ido-mode 1)
 (global-visual-line-mode 1)
 (setq inhibit-startup-screen t)
 (setq display-line-numbers-type 'relative)
@@ -22,10 +21,16 @@
 (global-hl-line-mode 1)
 
 ;;font
-(when (display-graphic-p)
-  (set-face-attribute 'default nil :font "Fira Code-10")
-  ;;(set-fontset-font t 'han "Maple Mono NF CN-10" nil 'prepend)
-  )
+(defun my/set-font (&optional frame)
+  "Set default font to Fira Code for GUI frames."
+  (when (and frame (display-graphic-p frame))
+    (set-frame-font "Fira Code-10" nil t)))
+
+(add-hook 'after-make-frame-functions #'my/set-font)
+(add-hook 'server-after-make-frame-hook
+          (lambda ()
+            (when (display-graphic-p)
+              (set-face-attribute 'default nil :font "Fira Code-10"))))
 ;;end font
 
 ;;load theme

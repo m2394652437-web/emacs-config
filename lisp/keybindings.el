@@ -104,20 +104,7 @@
   (interactive)
   (find-file "~/.emacs.d/lisp/keybindings.el"))
 
-;; super
-(if (display-graphic-p)
-    ;; GUI
-    (progn
-      ;;(bind-key "s-a" 'dirvish-side)
-      (bind-key "s-a" (lambda () (interactive) (dirvish-side  my-dirvish-side-dir)))
-      )
-
-  ;; CLI
-  (progn
-    ;;(bind-key "M-a" 'dirvish-side)
-    (bind-key "M-a" (lambda () (interactive) (dirvish-side my-dirvish-side-dir)))
-    )
-  )
-;; end super
+(bind-key "s-a" (lambda () (interactive) (dirvish-side  my-dirvish-side-dir)))
+(bind-key "M-a" (lambda () (interactive) (dirvish-side my-dirvish-side-dir)))
 
 (provide 'keybindings)
