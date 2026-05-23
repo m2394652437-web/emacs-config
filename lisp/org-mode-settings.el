@@ -24,8 +24,8 @@
      (latex . t)
      (shell . t)
      (emacs-lisp . t)))
-  
-  (setq org-latex-preview-process-default 'dvisvgm)
+
+  (setq org-preview-latex-default-process 'dvisvgm)
   (setq org-latex-preview-mode-display-live t)
   (setq org-latex-preview-mode-update-delay 0.25)
   

@@ -26,6 +26,7 @@
 	   ("python" (or (mode . python-mode)))
 	   ("elisp" (or (mode . emacs-lisp-mode)))	 
 	   ("other programs" (or (derived-mode . prog-mode)))
+	   ("shell" (or (mode . ghostel-mode)))	   
            ("orgs" (or (mode . org-mode)))
            ("magit" (or (mode . magit-status-mode)))
 	   )))

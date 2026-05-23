@@ -152,12 +152,28 @@
 		 '(glsl-mode . "glsl_analyzer"))
     (add-to-list 'lsp-bridge-single-lang-server-mode-list
 		 '(bash-mode . "bash-language-server")))
-
   
-  ;; if in CLI
-  (unless (display-graphic-p)
-    (require 'acm-terminal))
+  ;; ;; if in CLI
+  ;; (unless (display-graphic-p)
+  ;;   (require 'acm-terminal))
   )
+
+;; (defun my/toggle-acm-terminal ()
+;;   "Toggle acm-terminal for terminal frames."
+;;   (interactive)
+;;   (if (featurep 'acm-terminal)
+;;       (progn
+;;         (ignore-errors (acm-hide))      ; clean up popon overlays
+;;         (acm-terminal-deactive)          ; remove advices
+;;         (setq acm-menu-frame nil         ; clear stale frame refs
+;;               acm-doc-frame nil)
+;;         (unload-feature 'acm-terminal)
+;;         (message "acm-terminal disabled (child-frame mode)"))
+;;     (require 'acm-terminal)
+;;     (unless (display-graphic-p)
+;;       (acm-terminal-active))
+;;     (message "acm-terminal enabled (terminal mode)")))
+
 ;;end lsp bridge
 
 ;; multiple-cursors

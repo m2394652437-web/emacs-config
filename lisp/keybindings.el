@@ -15,6 +15,9 @@
 (bind-key "C-:" 'enlarge-window)
 (bind-key "C-\"" 'shrink-window)
 
+(bind-key "C-x <down>" 'kill-current-buffer)
+(bind-key "C-x C-<down>" 'kill-current-buffer)
+
 ;;smart delete region
 (defun delete-word-no-copy ()
   (interactive)
