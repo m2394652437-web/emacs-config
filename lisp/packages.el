@@ -21,7 +21,7 @@
 
 (use-package gcmh
   :config
-  (setq gcmh-high-cons-threshold 33554432)
+  (setq gcmh-high-cons-threshold 67108864)
   (setq gcmh-idle-delay 15)
   (gcmh-mode 1))
 
@@ -51,9 +51,12 @@
 (use-package restart-emacs)
 
 ;; (use-package flycheck
-;;   :hook(after-init . global-flycheck-mode))
-
-					;better buffer control
+;;   :straight ( :host github
+;; 	      :repo "flycheck/flycheck"
+;; 	      :branch "master")
+;;   :defer nil 
+;;   :config
+;;   (add-hook 'after-init-hook #'global-flycheck-mode))
 
 ;;ace window 
 (use-package ace-window)

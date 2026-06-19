@@ -15,8 +15,16 @@
 (bind-key "C-:" 'enlarge-window)
 (bind-key "C-\"" 'shrink-window)
 
-(bind-key "C-x <down>" 'kill-current-buffer)
-(bind-key "C-x C-<down>" 'kill-current-buffer)
+(bind-key "C-x <down>"
+          (lambda ()
+            (interactive)
+            (kill-current-buffer)
+            (delete-window)))
+(bind-key "C-x C-<down>"
+          (lambda ()
+            (interactive)
+            (kill-current-buffer)
+            (delete-window)))
 
 ;;smart delete region
 (defun delete-word-no-copy ()
@@ -36,15 +44,18 @@
       (delete-region (point) orig-pos))))
 
 (global-set-key (kbd "C-<backspace>") 'smart-delete-spaces-to-word)
+(global-set-key (kbd "M-<backspace>") 'smart-delete-spaces-to-word)
 
 ;;org
 (with-eval-after-load 'org
 (bind-key "C-<return>" 'org-insert-todo-heading-respect-content org-mode-map)
 (bind-key "C-`" 'org-latex-preview org-mode-map)
+(bind-key "C-S-<down>" 'org-next-visible-heading org-mode-map)
+(bind-key "C-S-<up>" 'org-previous-visible-heading org-mode-map)
 )
 
 ;; password store
-(bind-key "C-P" 'password-store-copy)
+(bind-key "M-p" 'password-store-copy)
 ;; input method
 (bind-key "C-\\" 'toggle-input-method)
 
@@ -67,7 +78,10 @@
 (bind-key "<f2>" 'ibuffer)
 (bind-key "<f3>" 'lsp-bridge-peek)
 (bind-key "<f4>" 'lsp-bridge-find-def)
-(bind-key "<f5>" 'compile)
+(bind-key "<f5>" 'my-compile-comint)
+(with-eval-after-load 'rust-mode
+  (bind-key "<f5>" 'cargo-mode-execute-task rust-mode-map)
+  )
 (bind-key "<f7>" 'kmacro-start-macro-or-insert-counter)
 
 (bind-key "M-<f2>"
@@ -96,7 +110,7 @@
     ))) 
 
 ;; org-mode
-(bind-key "M-p" 'org-redisplay-inline-images)
+;;(bind-key "M-p" 'org-redisplay-inline-images)
 (define-key minibuffer-local-map (kbd "C-c C-e") 'embark-export-write)
 
 (defun open-init-file()

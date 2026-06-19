@@ -1,8 +1,21 @@
+(setq process-connection-type t)
+
+(defun my-compile-comint (cmd)
+  "Compile in comint mode — buffer is editable, next-error still works."
+  (interactive
+   (list (read-shell-command "Compile: "
+			     (if (functionp 'compile-command)
+				 (funcall 'compile-command)
+			       (eval compile-command)))))
+  (compile cmd t))
+
 (use-package magit
   :straight ( :host github
 	      :repo "magit/magit"))
 
 ;;style
+(use-package reformatter)
+
 (defun format-buffer-with-command (command)
   "使用指定的 COMMAND 格式化当前缓冲区"
   (interactive)
@@ -20,17 +33,53 @@
     (unless (= saved-line-number (line-number-at-pos))
       (goto-line saved-line-number))))
 
+;;; NASM 汇编使用 nasfmt
+(defun format-asm-buffer ()
+  (interactive)
+  (let* ((tmpfile (make-temp-file "nasfmt-" nil ".asm"))
+         (saved-point (point))
+         (saved-line (line-number-at-pos)))
+    (unwind-protect
+        (let ((formatted
+               (progn
+                 (write-region (point-min) (point-max) tmpfile nil 'silent)
+                 (shell-command-to-string
+                  (concat "~/.cargo/bin/nasfmt "
+                          (shell-quote-argument tmpfile))))))
+          (delete-region (point-min) (point-max))
+          (insert formatted))
+      (ignore-errors (delete-file tmpfile)))
+    (goto-char (min saved-point (point-max)))
+    (unless (= saved-line (line-number-at-pos))
+      (goto-line saved-line))))
+
 ;;; C/C++ 使用 astyle (K&R 风格)
 (defun format-c-buffer ()
   (interactive)
   (format-buffer-with-command "astyle --style=kr --suffix=none"))
 
-;;; Python 使用 ruff
+;;; Python  ruff
 (defun format-python-buffer ()
   (interactive)
   (format-buffer-with-command "ruff format -"))
 
-;;; 快捷键绑定
+;;; Rust 使用 cargo fmt
+(defun format-rust-buffer ()
+  (interactive)
+  (let* ((file (buffer-file-name))
+         (dir (file-name-directory file))
+         (root (locate-dominating-file dir "Cargo.toml")))
+    (if root
+        (progn
+          (when (buffer-modified-p)
+            (save-buffer))
+          (let ((default-directory root))
+            (call-process "cargo" nil nil nil "fmt"))
+          ;; cargo fmt 直接写磁盘，buffer 需要 revert 才能看到改动
+          (revert-buffer t t t)
+          (message "Formatted %s (cargo fmt)" (file-name-nondirectory file)))
+      (message "Error: Not in a Rust project (no Cargo.toml found)"))))
+
 ;; C 模式（c-mode， c++-mode， c-or-c++-mode）
 (add-hook 'c-mode-common-hook
           (lambda ()
@@ -40,6 +89,25 @@
 (add-hook 'python-mode-hook
           (lambda ()
             (local-set-key (kbd "C-f") 'format-python-buffer)))
+
+;; rust 
+(add-hook 'rust-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-f") 'format-rust-buffer)))
+
+;; zig
+(add-hook 'zig-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-f") 'zig-format-buffer)))
+
+;; asm
+(add-hook 'asm-mode-hook
+          (lambda ()
+            (setq-local tab-width 4
+                        indent-tabs-mode nil)
+            (local-set-key (kbd "C-f") 'format-asm-buffer)
+            (add-hook 'before-save-hook 'format-asm-buffer nil t)))
+
 ;;end style
 
 (use-package projectile
@@ -129,7 +197,6 @@
          ;;(lsp-bridge-mode . lsp-bridge-semantic-tokens-mode)
 	 )
   :config
-  ;; glsl server
 
   (setq lsp-bridge-python-command
 	(expand-file-name "lsp-bridge-env/bin/python3" user-emacs-directory))
@@ -137,6 +204,8 @@
   ;; lang server
   (setq lsp-bridge-python-lsp-server "pyright"
 	lsp-bridge-c-lsp-server "clangd"
+	lsp-bridge-rust-lsp-server "rust-analyzer"
+	
 	)
  
   (setq lsp-bridge-enable-search-words t
@@ -153,26 +222,26 @@
     (add-to-list 'lsp-bridge-single-lang-server-mode-list
 		 '(bash-mode . "bash-language-server")))
   
-  ;; ;; if in CLI
-  ;; (unless (display-graphic-p)
-  ;;   (require 'acm-terminal))
+  ;; if in CLI
+  (unless (display-graphic-p)
+    (require 'acm-terminal))
   )
 
-;; (defun my/toggle-acm-terminal ()
-;;   "Toggle acm-terminal for terminal frames."
-;;   (interactive)
-;;   (if (featurep 'acm-terminal)
-;;       (progn
-;;         (ignore-errors (acm-hide))      ; clean up popon overlays
-;;         (acm-terminal-deactive)          ; remove advices
-;;         (setq acm-menu-frame nil         ; clear stale frame refs
-;;               acm-doc-frame nil)
-;;         (unload-feature 'acm-terminal)
-;;         (message "acm-terminal disabled (child-frame mode)"))
-;;     (require 'acm-terminal)
-;;     (unless (display-graphic-p)
-;;       (acm-terminal-active))
-;;     (message "acm-terminal enabled (terminal mode)")))
+(defun my/toggle-acm-terminal ()
+  "Toggle acm-terminal for terminal frames."
+  (interactive)
+  (if (featurep 'acm-terminal)
+      (progn
+        (ignore-errors (acm-hide))      ; clean up popon overlays
+        (acm-terminal-deactive)          ; remove advices
+        (setq acm-menu-frame nil         ; clear stale frame refs
+              acm-doc-frame nil)
+        (unload-feature 'acm-terminal)
+        (message "acm-terminal disabled (child-frame mode)"))
+    (require 'acm-terminal)
+    (unless (display-graphic-p)
+      (acm-terminal-active))
+    (message "acm-terminal enabled (terminal mode)")))
 
 ;;end lsp bridge
 

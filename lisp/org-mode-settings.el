@@ -1,10 +1,16 @@
-`(autoload 'org-mode "org" nil t)
+(autoload 'org-mode "org" nil t)
 (autoload 'org-agenda "org-agenda" nil t)
 
 ;;org basic setting 
 (with-eval-after-load 'org
+  (require 'ol)
   (setq org-startup-indented t)
   (setq org-startup-with-inline-images t)
+
+  ;; (setq org-pretty-entities t)
+  ;; (setq org-entities-user
+  ;;       '(
+  ;; 	  ))
   
   ;; arXiv link
   (org-link-set-parameters "arXiv"
@@ -24,11 +30,13 @@
      (latex . t)
      (shell . t)
      (emacs-lisp . t)))
-
+  
   (setq org-preview-latex-default-process 'dvisvgm)
   (setq org-latex-preview-mode-display-live t)
   (setq org-latex-preview-mode-update-delay 0.25)
-  
+  (plist-put org-format-latex-options :scale 1)
+  (setq org-startup-with-latex-preview t)
+
   ;; (custom-set-faces
   ;;  '(org-block ((t (:background "#f0f0f0"))))) 
 
@@ -37,21 +45,24 @@
   ;; 	      (face-remap-add-relative 'default
   ;; 				       '(:background "#fdf6e3" :foreground "#657b83"))))
   
-  (setq org-agenda-files
-	'("~/Documents/My_files/todo.org"))
+  (setq org-agenda-files my-agenda-files)
 
   (setq org-log-done 'time)
-
+  
+  
   )  
 
 ;;end org basic setting
 
+;; org ql
 (use-package org-ql
   :after org
   :demand t
   :config
   (require 'org-ql-search)
   (require 'org-ql-view))
+
+;;end org ql
 
 (use-package htmlize
   :defer t)
@@ -67,7 +78,7 @@
   :after org
   :hook (org-mode . org-modern-mode)
   :config
-  (setq org-modern-star ["◉" "○" "✸" "✳" "◈" "◇" "✿" "❀" "✜"])
+  (setq org-modern-star ["◉" "○" "◆" "✳" "✜" "◇" "✿" "❀" "*"])
   (setq-default line-spacing 0.1)
   (setq org-modern-label-border 1)
   
@@ -88,6 +99,8 @@
   (setq org-modern-keyword t)
   (setq org-src-fontify-natively t)
   )
+
+(setq global-org-modern-mode t)
 ;; end org modern
 
 (use-package org-modern-indent

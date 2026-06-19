@@ -14,7 +14,7 @@
 
 (add-hook 'after-init-hook
   (lambda ()
-    (setq gc-cons-threshold 800000)
+    (setq gc-cons-threshold 16777216)
     (message "GC threshold restored to %s" gc-cons-threshold)))
 
 (if (file-exists-p (expand-file-name "lisp/privacy.el" user-emacs-directory))

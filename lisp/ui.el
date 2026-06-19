@@ -21,21 +21,27 @@
 (global-hl-line-mode 1)
 
 ;;font
+(set-face-attribute 'default nil :font my-font)
 (defun my/set-font (&optional frame)
-  "Set default font to Fira Code for GUI frames."
   (when (and frame (display-graphic-p frame))
-    (set-frame-font "Fira Code-10" nil t)))
+    (set-frame-font my-font nil t)))
 
 (add-hook 'after-make-frame-functions #'my/set-font)
 (add-hook 'server-after-make-frame-hook
           (lambda ()
             (when (display-graphic-p)
-              (set-face-attribute 'default nil :font "Fira Code-10"))))
+              (set-face-attribute 'default nil :font my-font))))
 ;;end font
 
 ;;load theme
 ;;(load-theme 'deeper-blue t)
-(load-theme 'modus-operandi t)
+
+;;(load-theme 'manoj-dark t)
+
+(if (display-graphic-p)
+    (load-theme 'whiteboard t)
+  (load-theme 'manoj-dark t))
+
 ;;end load theme
 
 (use-package solaire-mode  

@@ -21,9 +21,14 @@
 
   (setq ibuffer-saved-filter-groups
 	'(("group"
+	   ("dir" (or (mode . dired-mode)))
+	   ("assembly" (or (mode . asm-mode)))
 	   ("c" (or (mode . c-mode)))
 	   ("cpp" (or (mode . c++-mode)))
+	   ("zig" (or (mode . zig-mode)))
+	   ("rust" (or (mode . rust-mode)))
 	   ("python" (or (mode . python-mode)))
+	   ("sh" (or (mode . sh-mode)))	 
 	   ("elisp" (or (mode . emacs-lisp-mode)))	 
 	   ("other programs" (or (derived-mode . prog-mode)))
 	   ("shell" (or (mode . ghostel-mode)))	   
@@ -62,18 +67,17 @@ See `auto-kill-buffer-modes' and `auto-kill-buffer-names'."
   "Kill hidden buffers matching `auto-kill-buffer-modes' or `auto-kill-buffer-names'."
   (dolist (buf (buffer-list))
     (when (and (buffer-live-p buf)
-               (not (get-buffer-window buf 'visible))
+               (not (get-buffer-window buf 'visible))	       
                (or (memq (buffer-local-value 'major-mode buf) auto-kill-buffer-modes)
                    (cl-some (lambda (re) (string-match-p re (buffer-name buf)))
                             auto-kill-buffer-names)))
       (kill-buffer buf))))
 
-(add-to-list 'auto-kill-buffer-modes 'dired-mode)
-(add-to-list 'auto-kill-buffer-modes 'special-mode)
+;;(add-to-list 'auto-kill-buffer-modes 'dired-mode)
 (add-to-list 'auto-kill-buffer-modes 'help-mode)
 (add-to-list 'auto-kill-buffer-modes 'emacs-lisp-compilation-mode)
 (add-to-list 'auto-kill-buffer-modes 'ibuffer-mode)
-(add-to-list 'auto-kill-buffer-names "\\*scratch\\*")
+;;(add-to-list 'auto-kill-buffer-names "\\*scratch\\*")
 
 (auto-kill-buffer-mode 1)
 ;;end auto kill buffers
