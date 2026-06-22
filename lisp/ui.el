@@ -44,10 +44,17 @@
 
 ;;end load theme
 
+;; ;; dash board
+;; (use-package dashboard
+;;   :straight ( :host github
+;; 	      :repo "emacs-dashboard/dashboard"
+;; 	      :branch "master")
+;;   )
+;; (dashboard-setup-startup-hook)
+
 (use-package solaire-mode  
   :config
   (solaire-global-mode +1)) 
-
 
 (set-face-attribute 'font-lock-function-name-face nil :weight 'bold)
 

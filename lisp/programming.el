@@ -83,29 +83,33 @@
 ;; C 模式（c-mode， c++-mode， c-or-c++-mode）
 (add-hook 'c-mode-common-hook
           (lambda ()
-            (local-set-key (kbd "C-f") 'format-c-buffer)))
+            (local-set-key (kbd "C-S-f") 'format-c-buffer)
+	    (add-hook 'before-save-hook 'format-c-buffer nil t)))
 
 ;; Python 模式（python-mode）
 (add-hook 'python-mode-hook
           (lambda ()
-            (local-set-key (kbd "C-f") 'format-python-buffer)))
+            (local-set-key (kbd "C-S-f") 'format-python-buffer)
+	    (add-hook 'before-save-hook 'format-python-buffer nil t)))
 
 ;; rust 
 (add-hook 'rust-mode-hook
           (lambda ()
-            (local-set-key (kbd "C-f") 'format-rust-buffer)))
+            (local-set-key (kbd "C-S-f") 'format-rust-buffer)
+	    (add-hook 'before-save-hook 'format-rust-buffer nil t)))
 
 ;; zig
 (add-hook 'zig-mode-hook
           (lambda ()
-            (local-set-key (kbd "C-f") 'zig-format-buffer)))
+            (local-set-key (kbd "C-S-f") 'zig-format-buffer)
+	    (add-hook 'before-save-hook 'zig-format-buffer nil t)))
 
 ;; asm
 (add-hook 'asm-mode-hook
           (lambda ()
             (setq-local tab-width 4
                         indent-tabs-mode nil)
-            (local-set-key (kbd "C-f") 'format-asm-buffer)
+            (local-set-key (kbd "C-S-f") 'format-asm-buffer)
             (add-hook 'before-save-hook 'format-asm-buffer nil t)))
 
 ;;end style

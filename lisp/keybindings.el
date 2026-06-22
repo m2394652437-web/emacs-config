@@ -10,6 +10,53 @@
 (bind-key "C-a" 'back-to-indentation)
 (bind-key "C-<tab>" 'hs-toggle-hiding)
 
+
+
+"Delimiters are always detected"
+(defvar my-word-stop-chars '(?. ?\" ?;))
+
+;; smart word move
+(defun my--word-move (fwd word-fn)
+  "Move one step forward (FWD=t) or backward (FWD=nil),
+stopping at delimiters and `my-word-stop-chars'."
+  (let* ((stop-p (lambda (c) (and c (or (memq c my-word-stop-chars)
+                                       (memq (char-syntax c) '(?\( ?\)))))))
+         (on-delim (and (not (if fwd (eobp) (bobp)))
+                        (if fwd
+                            (funcall stop-p (char-after))
+                          (or (funcall stop-p (char-before))
+                              (funcall stop-p (char-after)))))))
+    (if on-delim
+        (funcall (if fwd #'forward-char #'backward-char) 1)
+      (let* ((orig (point))
+             (bound (save-excursion (funcall word-fn 1) (point)))
+             (stuck (if fwd (<= bound orig) (>= bound orig))))
+        (if stuck
+            (funcall (if fwd #'forward-char #'backward-char) 1)
+          (let* ((regex (concat "\\s(\\|\\s)\\|"
+                                (regexp-opt (mapcar #'char-to-string my-word-stop-chars))))
+                 (stop (save-excursion
+                         (if fwd
+                             (if (re-search-forward regex bound t) (match-beginning 0) bound)
+                           (if (re-search-backward regex bound t) (point) bound))))
+                 (target (if fwd (min stop bound) (max stop bound))))
+            (goto-char target)))))))
+
+(defun my--right-word-advice (orig-fun &rest args)
+  (let* ((arg (or (car args) 1))
+        (fwd (< arg 0)))              ; negative arg → backward
+    (dotimes (_ (abs arg))
+      (my--word-move (not fwd) orig-fun))))
+
+(defun my--left-word-advice (orig-fun &rest args)
+  (let* ((arg (or (car args) 1))
+        (rev (< arg 0)))              ; negative arg → forward
+    (dotimes (_ (abs arg))
+      (my--word-move rev orig-fun))))
+
+(advice-add 'right-word :around #'my--right-word-advice)
+(advice-add 'left-word  :around #'my--left-word-advice)
+
 (bind-key "C-}" 'shrink-window-horizontally)
 (bind-key "C-{" 'enlarge-window-horizontally)
 (bind-key "C-:" 'enlarge-window)
@@ -29,11 +76,9 @@
 ;;smart delete region
 (defun delete-word-no-copy ()
   (interactive)
-  (let ((start (point))
-        (end (save-excursion
-               (backward-word 1)
-               (point))))
-    (delete-region end start)))
+  (let ((start (point)))
+    (delete-region (save-excursion (my--word-move nil #'left-word) (point))
+                   start)))
 
 (defun smart-delete-spaces-to-word ()
   (interactive)
@@ -65,7 +110,7 @@
 (bind-key "<left>" 'dired-up-directory dirvish-mode-map)
 (bind-key "<right>" 'dired-find-file dirvish-mode-map)
 (bind-key "C-<tab>" 'dirvish-subtree-clear dirvish-mode-map)
-(bind-key "<tab>" 'dirvish-subtree-toggle dirvish-mode-map)
+(bind-key "TAB" 'dirvish-subtree-toggle dirvish-mode-map)
 )
 
 (bind-key  "C-c m" 'bookmark-set)    
