@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 ;;rime 
 (use-package rime
   :custom

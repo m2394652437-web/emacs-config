@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 ;;ibuffer
 (use-package nerd-icons-ibuffer
   :ensure t
@@ -54,20 +55,37 @@
   :type '(repeat regexp)
   :group 'convenience)
 
+(defvar auto-kill-buffer--cleanup-timer nil)
+
 ;;;###autoload
 (define-minor-mode auto-kill-buffer-mode
   "Automatically kill buffers of selected modes/names when they are no longer displayed.
 See `auto-kill-buffer-modes' and `auto-kill-buffer-names'."
   :global t
   (if auto-kill-buffer-mode
-      (add-hook 'window-configuration-change-hook #'auto-kill-buffer--cleanup)
-    (remove-hook 'window-configuration-change-hook #'auto-kill-buffer--cleanup)))
+      (add-hook 'window-configuration-change-hook #'auto-kill-buffer--schedule-cleanup)
+    (remove-hook 'window-configuration-change-hook #'auto-kill-buffer--schedule-cleanup)
+    (when (timerp auto-kill-buffer--cleanup-timer)
+      (cancel-timer auto-kill-buffer--cleanup-timer)
+      (setq auto-kill-buffer--cleanup-timer nil))))
+
+(defun auto-kill-buffer--schedule-cleanup ()
+  "Schedule hidden-buffer cleanup after window changes finish."
+  (when (timerp auto-kill-buffer--cleanup-timer)
+    (cancel-timer auto-kill-buffer--cleanup-timer))
+  (setq auto-kill-buffer--cleanup-timer
+        (run-with-idle-timer 0 nil #'auto-kill-buffer--run-cleanup)))
+
+(defun auto-kill-buffer--run-cleanup ()
+  (setq auto-kill-buffer--cleanup-timer nil)
+  (when auto-kill-buffer-mode
+    (auto-kill-buffer--cleanup)))
 
 (defun auto-kill-buffer--cleanup ()
   "Kill hidden buffers matching `auto-kill-buffer-modes' or `auto-kill-buffer-names'."
   (dolist (buf (buffer-list))
     (when (and (buffer-live-p buf)
-               (not (get-buffer-window buf 'visible))	       
+               (not (get-buffer-window buf 'visible))
                (or (memq (buffer-local-value 'major-mode buf) auto-kill-buffer-modes)
                    (cl-some (lambda (re) (string-match-p re (buffer-name buf)))
                             auto-kill-buffer-names)))

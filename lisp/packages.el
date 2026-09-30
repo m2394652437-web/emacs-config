@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 (use-package async)
 (dired-async-mode 1)
 (async-bytecomp-package-mode 1)
@@ -20,6 +21,7 @@
   (require 'password-store))
 
 (use-package gcmh
+  :demand t
   :config
   (setq gcmh-high-cons-threshold 67108864)
   (setq gcmh-idle-delay 15)

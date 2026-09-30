@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 ;; (use-package mu4e-alert
 ;;   :ensure t)
 ;; (mu4e-alert-enable-mode-line-display)

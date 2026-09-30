@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 (setq ring-bell-function 'ignore)
 
 ;;; startup.el
@@ -10,6 +11,8 @@
 ;;(setq load-prefer-newer t)
 
 ;;straight
+(setq straight-check-for-modifications '(check-on-save find-when-checking))
+
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))

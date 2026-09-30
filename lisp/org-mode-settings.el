@@ -1,9 +1,11 @@
+;;; -*- lexical-binding: t; -*-
 (autoload 'org-mode "org" nil t)
 (autoload 'org-agenda "org-agenda" nil t)
 
-;;org basic setting 
+(setq org-modules nil)
+
+;;org basic setting
 (with-eval-after-load 'org
-  (require 'ol)
   (setq org-startup-indented t)
   (setq org-startup-with-inline-images t)
 
@@ -54,15 +56,10 @@
 
 ;;end org basic setting
 
-;; org ql
-(use-package org-ql
-  :after org
-  :demand t
-  :config
-  (require 'org-ql-search)
-  (require 'org-ql-view))
-
-;;end org ql
+;; ;; org ql
+;; (use-package org-ql
+;;   :defer t)
+;; ;;end org ql
 
 (use-package htmlize
   :defer t)
@@ -131,7 +128,9 @@
 
 ;;export typest
 (use-package ox-typst
-  :hook (org-mode . (lambda () (require 'ox-typst))))
+  :commands (org-typst-export-as-typst
+             org-typst-export-to-typst
+             org-typst-export-to-pdf))
 
 ;; (use-package olivetti
 ;;   :straight ( :host github

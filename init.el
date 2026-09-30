@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 (setq frame-inhibit-implied-resize t)
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 (add-to-list 'load-path (expand-file-name "lisp/static-packages" user-emacs-directory))
@@ -40,5 +41,5 @@
 ;;not for server
 (require 'for-kitty)
 (require 'org-mode-settings)
-(require 'email)
-(require 'ai)
+;;(require 'email)
+

@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 ;;(setq my-gmail-email "xxx@gmail.com")
 ;;(setq my-name "xxx")
 ;;(setq my-font "Fira Code-11")

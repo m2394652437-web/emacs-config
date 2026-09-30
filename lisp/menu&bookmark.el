@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 (use-package hydra)
 (defhydra hydra-buffer-menu (:color red
 				    :hint nil)
@@ -14,6 +15,23 @@ _l_: lines
   ("a" mc/mark-all-like-this)
   ("l" mc/edit-lines)
   ("b" consult-imenu)
+  ("ESC" nil "cancel"))
+
+(defhydra hydra-file-group-menu (:color blue
+                                 :hint nil)
+  "
+^File groups^
+------------------------
+_o_: open       _R_: rebuild
+_c_: create     _a_: add files
+_r_: remove     _d_: delete
+"
+  ("o" my-file-group-open)
+  ("R" my-file-group-rebuild)
+  ("c" my-file-group-create)
+  ("a" my-file-group-add-files)
+  ("r" my-file-group-remove-files)
+  ("d" my-file-group-delete)
   ("ESC" nil "cancel"))
 
 (defun freedom-context-menu (event)

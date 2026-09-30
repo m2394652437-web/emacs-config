@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 (use-package all-the-icons)
 (use-package nerd-icons)
 
@@ -9,7 +10,10 @@
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 
 (which-function-mode 1)
-(pixel-scroll-mode 1)
+(pixel-scroll-precision-mode 1)
+(setq pixel-scroll-precision-use-momentum t)
+;;(pixel-scroll-mode 1)
+
 (blink-cursor-mode -1)
 (menu-bar-mode -1)
 (tool-bar-mode -1)
@@ -40,7 +44,8 @@
 
 (if (display-graphic-p)
     (load-theme 'whiteboard t)
-  (load-theme 'manoj-dark t))
+  (load-theme 'wombat t)
+  )
 
 ;;end load theme
 

@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 (when (fboundp 'pixel-scroll-precision-mode)
   (pixel-scroll-precision-mode 1)
   (setq pixel-scroll-precision-use-momentum t)) 
@@ -16,7 +17,7 @@
 (defvar my-word-stop-chars '(?. ?\" ?;))
 
 ;; smart word move
-(defun my--word-move (fwd word-fn)
+(defun my--word-move (fwd)
   "Move one step forward (FWD=t) or backward (FWD=nil),
 stopping at delimiters and `my-word-stop-chars'."
   (let* ((stop-p (lambda (c) (and c (or (memq c my-word-stop-chars)
@@ -29,7 +30,9 @@ stopping at delimiters and `my-word-stop-chars'."
     (if on-delim
         (funcall (if fwd #'forward-char #'backward-char) 1)
       (let* ((orig (point))
-             (bound (save-excursion (funcall word-fn 1) (point)))
+             (bound (save-excursion
+                      (funcall (if fwd #'forward-word #'backward-word) 1)
+                      (point)))
              (stuck (if fwd (<= bound orig) (>= bound orig))))
         (if stuck
             (funcall (if fwd #'forward-char #'backward-char) 1)
@@ -46,13 +49,13 @@ stopping at delimiters and `my-word-stop-chars'."
   (let* ((arg (or (car args) 1))
         (fwd (< arg 0)))              ; negative arg → backward
     (dotimes (_ (abs arg))
-      (my--word-move (not fwd) orig-fun))))
+      (my--word-move (not fwd)))))
 
 (defun my--left-word-advice (orig-fun &rest args)
   (let* ((arg (or (car args) 1))
         (rev (< arg 0)))              ; negative arg → forward
     (dotimes (_ (abs arg))
-      (my--word-move rev orig-fun))))
+      (my--word-move rev))))
 
 (advice-add 'right-word :around #'my--right-word-advice)
 (advice-add 'left-word  :around #'my--left-word-advice)
@@ -75,9 +78,11 @@ stopping at delimiters and `my-word-stop-chars'."
 
 ;;smart delete region
 (defun delete-word-no-copy ()
+  "Delete backward one step: delimiter/stop-char, or a word.
+Uses the same logic as `C-<left>'."
   (interactive)
   (let ((start (point)))
-    (delete-region (save-excursion (my--word-move nil #'left-word) (point))
+    (delete-region (save-excursion (my--word-move nil) (point))
                    start)))
 
 (defun smart-delete-spaces-to-word ()
@@ -117,7 +122,8 @@ stopping at delimiters and `my-word-stop-chars'."
 (bind-key  "C-c g" 'bookmark-jump)   
 ;; 寄存器快速跳转
 (bind-key "C-c s" 'point-to-register)
-(bind-key "C-c f" 'jump-to-register) 
+(bind-key "C-c f" 'jump-to-register)
+(bind-key "C-c w" 'hydra-file-group-menu/body)
 
 (bind-key "<f1>" 'dired)
 (bind-key "<f2>" 'ibuffer)
@@ -146,6 +152,9 @@ stopping at delimiters and `my-word-stop-chars'."
 (bind-key "M-." 'other-window)
 (bind-key "M-P" 'password-store-copy)
 (bind-key "M-b" 'hydra-buffer-menu/body)
+;; 必须在此处 require：ff-search-directories 只有被 defvar 后，
+;; 下面的 let 在 lexical-binding 下才会做动态绑定，ff-find-other-file 才看得到。
+(require 'find-file)
 (bind-key "M-]"
 (lambda ()
   (interactive)

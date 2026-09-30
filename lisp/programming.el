@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 (setq process-connection-type t)
 
 (defun my-compile-comint (cmd)
@@ -13,104 +14,66 @@
   :straight ( :host github
 	      :repo "magit/magit"))
 
-;;style
-(use-package reformatter)
+;;; ============================================================
+;;; Formatters — unified via reformatter
+;;; ============================================================
 
-(defun format-buffer-with-command (command)
-  "使用指定的 COMMAND 格式化当前缓冲区"
-  (interactive)
-  (when (buffer-modified-p)
-    (save-buffer))  ; 可选：保存未保存的更改
-  (let ((saved-line-number (line-number-at-pos))
-        (saved-point (point)))
-    (shell-command-on-region
-     (point-min)
-     (point-max)
-     command
-     nil
-     t)
-    (goto-char saved-point)
-    (unless (= saved-line-number (line-number-at-pos))
-      (goto-line saved-line-number))))
+(use-package reformatter
+  :config
 
-;;; NASM 汇编使用 nasfmt
-(defun format-asm-buffer ()
-  (interactive)
-  (let* ((tmpfile (make-temp-file "nasfmt-" nil ".asm"))
-         (saved-point (point))
-         (saved-line (line-number-at-pos)))
-    (unwind-protect
-        (let ((formatted
-               (progn
-                 (write-region (point-min) (point-max) tmpfile nil 'silent)
-                 (shell-command-to-string
-                  (concat "~/.cargo/bin/nasfmt "
-                          (shell-quote-argument tmpfile))))))
-          (delete-region (point-min) (point-max))
-          (insert formatted))
-      (ignore-errors (delete-file tmpfile)))
-    (goto-char (min saved-point (point-max)))
-    (unless (= saved-line (line-number-at-pos))
-      (goto-line saved-line))))
+  ;; C/C++ — astyle (supports stdin)
+  (reformatter-define c-format
+    :program "astyle"
+    :args '("--style=kr" "--suffix=none")
+    :lighter " CF")
 
-;;; C/C++ 使用 astyle (K&R 风格)
-(defun format-c-buffer ()
-  (interactive)
-  (format-buffer-with-command "astyle --style=kr --suffix=none"))
+  ;; Python — ruff (supports stdin)
+  (reformatter-define python-format
+    :program "ruff"
+    :args '("format" "-")
+    :lighter " PF")
 
-;;; Python  ruff
-(defun format-python-buffer ()
-  (interactive)
-  (format-buffer-with-command "ruff format -"))
+  ;; Rust — rustfmt (supports stdin)
+  (reformatter-define rust-format
+    :program "rustfmt"
+    :args '("--emit=stdout")
+    :lighter " RF")
 
-;;; Rust 使用 cargo fmt
-(defun format-rust-buffer ()
-  (interactive)
-  (let* ((file (buffer-file-name))
-         (dir (file-name-directory file))
-         (root (locate-dominating-file dir "Cargo.toml")))
-    (if root
-        (progn
-          (when (buffer-modified-p)
-            (save-buffer))
-          (let ((default-directory root))
-            (call-process "cargo" nil nil nil "fmt"))
-          ;; cargo fmt 直接写磁盘，buffer 需要 revert 才能看到改动
-          (revert-buffer t t t)
-          (message "Formatted %s (cargo fmt)" (file-name-nondirectory file)))
-      (message "Error: Not in a Rust project (no Cargo.toml found)"))))
+  ;; NASM assembly — nasfmt (no stdin, uses temp file)
+  (reformatter-define asm-format
+    :program "~/.cargo/bin/nasfmt"
+    :args nil
+    :stdin nil
+    :lighter " AF"))
 
-;; C 模式（c-mode， c++-mode， c-or-c++-mode）
-(add-hook 'c-mode-common-hook
-          (lambda ()
-            (local-set-key (kbd "C-S-f") 'format-c-buffer)
-	    (add-hook 'before-save-hook 'format-c-buffer nil t)))
+;;; -----------------------------------------------------------
+;;; Mode hooks — format key + format-on-save
+;;; -----------------------------------------------------------
 
-;; Python 模式（python-mode）
-(add-hook 'python-mode-hook
-          (lambda ()
-            (local-set-key (kbd "C-S-f") 'format-python-buffer)
-	    (add-hook 'before-save-hook 'format-python-buffer nil t)))
+(defun my/setup-format-keys (format-fn)
+  "Bind C-S-f to FORMAT-FN and enable format-on-save for the buffer."
+  (local-set-key (kbd "C-S-f") format-fn)
+  (add-hook 'before-save-hook format-fn nil t))
 
-;; rust 
-(add-hook 'rust-mode-hook
-          (lambda ()
-            (local-set-key (kbd "C-S-f") 'format-rust-buffer)
-	    (add-hook 'before-save-hook 'format-rust-buffer nil t)))
+;; C / C++
+(dolist (hook '(c-mode-hook c++-mode-hook))
+  (add-hook hook (lambda () (my/setup-format-keys #'c-format-buffer))))
 
-;; zig
-(add-hook 'zig-mode-hook
-          (lambda ()
-            (local-set-key (kbd "C-S-f") 'zig-format-buffer)
-	    (add-hook 'before-save-hook 'zig-format-buffer nil t)))
+;; Python
+(add-hook 'python-mode-hook (lambda () (my/setup-format-keys #'python-format-buffer)))
 
-;; asm
+;; Rust
+(add-hook 'rust-mode-hook (lambda () (my/setup-format-keys #'rust-format-buffer)))
+
+;; Zig — uses zig-mode's built-in reformatter definition
+(add-hook 'zig-mode-hook (lambda () (my/setup-format-keys #'zig-format-buffer)))
+
+;; NASM assembly
 (add-hook 'asm-mode-hook
           (lambda ()
             (setq-local tab-width 4
                         indent-tabs-mode nil)
-            (local-set-key (kbd "C-S-f") 'format-asm-buffer)
-            (add-hook 'before-save-hook 'format-asm-buffer nil t)))
+            (my/setup-format-keys #'asm-format-buffer)))
 
 ;;end style
 
@@ -197,9 +160,7 @@
             :files (:defaults "*.el" "*.py" "acm" "core" "langserver" "multiserver" "resources")
             :build (:not compile))
   :defer t
-  :hook (((prog-mode org-mode) . lsp-bridge-mode)
-         ;;(lsp-bridge-mode . lsp-bridge-semantic-tokens-mode)
-	 )
+  :hook (prog-mode . lsp-bridge-mode)
   :config
 
   (setq lsp-bridge-python-command
